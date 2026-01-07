@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/sendgrid/sendgrid-go"
+	"github.com/sendgrid/sendgrid-go/helpers/mail"
 	"github.com/stripe/stripe-go/v76"
 	"github.com/stripe/stripe-go/v76/checkout/session"
 	"github.com/stripe/stripe-go/v76/customer"
@@ -50,6 +52,26 @@ func handleWebhook(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "internal server error", http.StatusInternalServerError)
 			return
 		}
+	case "customer.subscription.deleted":
+		if err := handleSubscriptionDeleted(event); err != nil {
+			log.Printf("Error handling customer.subscription.deleted: %v", err)
+			// Don't fail webhook, just log
+		}
+	case "customer.subscription.updated":
+		if err := handleSubscriptionUpdated(event); err != nil {
+			log.Printf("Error handling customer.subscription.updated: %v", err)
+			// Don't fail webhook, just log
+		}
+	case "invoice.payment_failed":
+		if err := handlePaymentFailed(event); err != nil {
+			log.Printf("Error handling invoice.payment_failed: %v", err)
+			// Don't fail webhook, just log
+		}
+	case "invoice.payment_succeeded":
+		if err := handlePaymentSucceeded(event); err != nil {
+			log.Printf("Error handling invoice.payment_succeeded: %v", err)
+			// Don't fail webhook, just log
+		}
 	default:
 		log.Printf("Unhandled event type: %s", event.Type)
 	}
@@ -82,18 +104,14 @@ func handleCheckoutCompleted(event stripe.Event) error {
 	}
 
 	// Get customer ID from session
-	// In Stripe CheckoutSession, Customer is a string ID
+	// In Stripe CheckoutSession, Customer can be a string ID or Customer object
 	var customerID string
 	var customerEmail string
 	
+	// Get customer ID - in CheckoutSession, Customer is a pointer to Customer object
 	if sess.Customer != nil {
-		// Customer might be expanded as an object or be a string
-		if cust, ok := sess.Customer.(*stripe.Customer); ok {
-			customerID = cust.ID
-			customerEmail = cust.Email
-		} else if custID, ok := sess.Customer.(string); ok {
-			customerID = custID
-		}
+		customerID = sess.Customer.ID
+		customerEmail = sess.Customer.Email
 	}
 	
 	// For guest checkouts, create a customer from email
@@ -117,15 +135,16 @@ func handleCheckoutCompleted(event stripe.Event) error {
 		customerEmail = sess.CustomerDetails.Email
 	}
 
-	// Generate API key
-	apiKey, err := generateAPIKey()
+	// Generate API key (paid tier)
+	apiKey, err := generateAPIKey(false)
 	if err != nil {
 		return fmt.Errorf("failed to generate API key: %w", err)
 	}
 
-	// Update customer metadata with API key
+	// Update customer metadata with API key and tier
 	updateParams := &stripe.CustomerParams{}
 	updateParams.AddMetadata("api_key", apiKey)
+	updateParams.AddMetadata("tier", "paid")
 	
 	_, err = customer.Update(customerID, updateParams)
 	if err != nil {
@@ -145,13 +164,120 @@ func handleCheckoutCompleted(event stripe.Event) error {
 	return nil
 }
 
-// sendAPIKeyEmail logs the email action (replace with actual email sending)
+// sendAPIKeyEmail sends the API key to the user via SendGrid
 func sendAPIKeyEmail(email, apiKey string) error {
-	log.Printf("=== API KEY EMAIL (would send to %s) ===", email)
-	log.Printf("Subject: Your Austrian Invoice API Key")
-	log.Printf("Body: Your API key is: %s", apiKey)
-	log.Printf("Keep this key secure and use it in the X-API-KEY header for all requests.")
-	log.Printf("=========================================")
+	sendGridAPIKey := os.Getenv("SENDGRID_API_KEY")
+	fromEmail := os.Getenv("FROM_EMAIL")
+	
+	// Fallback if FROM_EMAIL not set
+	if fromEmail == "" {
+		fromEmail = "noreply@at-invoice.at"
+	}
+	
+	// If SendGrid not configured, log and return (don't fail)
+	if sendGridAPIKey == "" {
+		log.Printf("SENDGRID_API_KEY not set - email not sent to %s", email)
+		log.Printf("API Key for %s: %s", email, apiKey)
+		return nil
+	}
+	
+	// Create email message
+	from := mail.NewEmail("AT-Invoice", fromEmail)
+	to := mail.NewEmail("", email)
+	subject := "Your Austrian Invoice API Key"
+	
+	// HTML email body
+	htmlContent := fmt.Sprintf(`
+		<!DOCTYPE html>
+		<html>
+		<head>
+			<meta charset="UTF-8">
+			<style>
+				body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+				.container { max-width: 600px; margin: 0 auto; padding: 20px; }
+				.header { background-color: #dc2626; color: white; padding: 20px; text-align: center; }
+				.content { padding: 20px; background-color: #f9fafb; }
+				.api-key { background-color: #1e293b; color: #60a5fa; padding: 15px; border-radius: 5px; font-family: monospace; font-size: 14px; word-break: break-all; margin: 20px 0; }
+				.footer { padding: 20px; text-align: center; color: #6b7280; font-size: 12px; }
+				.button { display: inline-block; padding: 12px 24px; background-color: #dc2626; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0; }
+			</style>
+		</head>
+		<body>
+			<div class="container">
+				<div class="header">
+					<h1>AT-Invoice API Key</h1>
+				</div>
+				<div class="content">
+					<p>Thank you for subscribing to AT-Invoice!</p>
+					<p>Your API key has been generated. Use it in the <code>X-API-KEY</code> header for all API requests.</p>
+					
+					<div class="api-key">%s</div>
+					
+					<p><strong>Important Security Notes:</strong></p>
+					<ul>
+						<li>Keep this API key secure and never share it publicly</li>
+						<li>Use it in the <code>X-API-KEY</code> header for all requests</li>
+						<li>If you suspect it's compromised, contact support immediately</li>
+					</ul>
+					
+					<p><strong>Example Usage:</strong></p>
+					<pre style="background-color: #1e293b; color: #60a5fa; padding: 15px; border-radius: 5px; overflow-x: auto;">
+curl -X POST https://api.at-invoice.at/generate \\
+  -H "X-API-KEY: %s" \\
+  -H "Content-Type: application/json" \\
+  -d '{...}'
+					</pre>
+					
+					<p><a href="https://at-invoice.at" class="button">View Documentation</a></p>
+				</div>
+				<div class="footer">
+					<p>AT-Invoice | Austrian ebInterface 6.1 Compliance API</p>
+					<p>If you didn't request this key, please contact support.</p>
+				</div>
+			</div>
+		</body>
+		</html>
+	`, apiKey, apiKey)
+	
+	// Plain text version
+	plainTextContent := fmt.Sprintf(`
+Thank you for subscribing to AT-Invoice!
+
+Your API key has been generated: %s
+
+Important Security Notes:
+- Keep this API key secure and never share it publicly
+- Use it in the X-API-KEY header for all requests
+- If you suspect it's compromised, contact support immediately
+
+Example Usage:
+curl -X POST https://api.at-invoice.at/generate \\
+  -H "X-API-KEY: %s" \\
+  -H "Content-Type: application/json" \\
+  -d '{...}'
+
+View documentation: https://at-invoice.at
+
+If you didn't request this key, please contact support.
+	`, apiKey, apiKey)
+	
+	message := mail.NewSingleEmail(from, subject, to, plainTextContent, htmlContent)
+	
+	// Send email via SendGrid
+	client := sendgrid.NewSendClient(sendGridAPIKey)
+	response, err := client.Send(message)
+	if err != nil {
+		return fmt.Errorf("failed to send email via SendGrid: %w", err)
+	}
+	
+	// Log response for debugging
+	if response.StatusCode >= 200 && response.StatusCode < 300 {
+		log.Printf("API key email sent successfully to %s (Status: %d)", email, response.StatusCode)
+	} else {
+		log.Printf("SendGrid returned non-2xx status: %d, Body: %s", response.StatusCode, response.Body)
+		return fmt.Errorf("SendGrid returned status %d", response.StatusCode)
+	}
+	
 	return nil
 }
 

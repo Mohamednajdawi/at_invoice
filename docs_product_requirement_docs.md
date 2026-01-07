@@ -1,6 +1,12 @@
 ## Austrian ebInterface 6.1 Invoice Microservice – Product Requirements
 
-**Goal**: Provide a lightweight HTTP microservice that converts a simple JSON invoice payload into a legally aligned Austrian ebInterface 6.1 XML invoice.
+**Goal**: Provide a headless HTTP microservice that converts simple JSON invoice payloads into legally compliant Austrian ebInterface 6.1 XML files. Built for Austrian SMEs, web agencies, and IT consultants who need to bridge modern e-commerce platforms (Stripe, Shopify, WooCommerce) to the Austrian government's mandatory e-invoicing portal.
+
+### Market Context
+
+- **Legal Mandate**: Since 2014, Austrian Federal Government requires structured XML format. Since 2020, applies to almost all public authorities via `e-rechnung.gv.at`.
+- **Market Gap**: Modern global tools generate PDFs but cannot produce Austrian ebInterface 6.1 XML schema.
+- **Solution**: Stateless API processing JSON → XML in milliseconds with zero data retention (DSGVO compliant by design).
 
 ### Functional Scope
 

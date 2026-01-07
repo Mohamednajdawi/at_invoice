@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"io"
 	"math"
+	"regexp"
+	"strings"
 	"time"
 )
 
@@ -229,27 +231,70 @@ func decodeJSON(r io.Reader, v any) error {
 	return dec.Decode(v)
 }
 
+// Validation helper functions
+var (
+	vatIDRegex = regexp.MustCompile(`^ATU\d{9}$`)
+	bicRegex   = regexp.MustCompile(`^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$`)
+	ibanRegex  = regexp.MustCompile(`^AT\d{2}\d{16}$`)
+)
+
+func validateVATID(vatID string) error {
+	if !vatIDRegex.MatchString(vatID) {
+		return fmt.Errorf("vat_id must be in format ATU followed by 9 digits (e.g., ATU13585627)")
+	}
+	return nil
+}
+
+func validateBIC(bic string) error {
+	if !bicRegex.MatchString(bic) {
+		return fmt.Errorf("bic must be 8 or 11 characters (e.g., BKAUATWW)")
+	}
+	return nil
+}
+
+func validateIBAN(iban string) error {
+	// Remove spaces for validation
+	iban = strings.ReplaceAll(iban, " ", "")
+	if !ibanRegex.MatchString(iban) {
+		return fmt.Errorf("iban must be in Austrian format: AT followed by 20 digits (e.g., AT123400000000005678)")
+	}
+	return nil
+}
+
+func validateDate(dateStr string) error {
+	if _, err := time.Parse("2006-01-02", dateStr); err != nil {
+		return fmt.Errorf("date must be in YYYY-MM-DD format")
+	}
+	return nil
+}
+
 func validateInvoice(inv InvoiceJSON) error {
 	if inv.InvoiceNumber == "" {
-		return fmt.Errorf("InvoiceNumber is required")
+		return fmt.Errorf("invoice_number is required")
 	}
 	if inv.InvoiceDate == "" {
-		return fmt.Errorf("InvoiceDate is required")
+		return fmt.Errorf("invoice_date is required")
 	}
-	if _, err := time.Parse("2006-01-02", inv.InvoiceDate); err != nil {
-		return fmt.Errorf("InvoiceDate must be YYYY-MM-DD")
+	if err := validateDate(inv.InvoiceDate); err != nil {
+		return fmt.Errorf("invoice_date: %w", err)
 	}
 	if inv.Biller.Name == "" || inv.Biller.VATID == "" {
-		return fmt.Errorf("Biller name and vat_id are required")
+		return fmt.Errorf("biller.name and biller.vat_id are required")
+	}
+	if err := validateVATID(inv.Biller.VATID); err != nil {
+		return fmt.Errorf("biller.vat_id: %w", err)
 	}
 	if inv.Biller.Address.Street == "" || inv.Biller.Address.ZIP == "" || inv.Biller.Address.City == "" {
-		return fmt.Errorf("Biller address street, zip and city are required")
+		return fmt.Errorf("biller.address: street, zip and city are required")
 	}
 	if inv.Recipient.Name == "" || inv.Recipient.VATID == "" {
-		return fmt.Errorf("Recipient name and vat_id are required")
+		return fmt.Errorf("recipient.name and recipient.vat_id are required")
+	}
+	if err := validateVATID(inv.Recipient.VATID); err != nil {
+		return fmt.Errorf("recipient.vat_id: %w", err)
 	}
 	if inv.Recipient.Address.Street == "" || inv.Recipient.Address.ZIP == "" || inv.Recipient.Address.City == "" {
-		return fmt.Errorf("Recipient address street, zip and city are required")
+		return fmt.Errorf("recipient.address: street, zip and city are required")
 	}
 	// B2G: OrderReference mandatory
 	if inv.Recipient.OrderID == "" {
@@ -260,17 +305,26 @@ func validateInvoice(inv InvoiceJSON) error {
 	}
 	for i, d := range inv.Items {
 		if d.Quantity <= 0 {
-			return fmt.Errorf("line %d: Quantity must be > 0", i+1)
+			return fmt.Errorf("items[%d].quantity must be > 0", i)
 		}
 		if d.Description == "" {
-			return fmt.Errorf("line %d: Description is required", i+1)
+			return fmt.Errorf("items[%d].description is required", i)
 		}
 		if d.UnitPriceCents < 0 {
-			return fmt.Errorf("line %d: unit_price_cents must be >= 0", i+1)
+			return fmt.Errorf("items[%d].unit_price_cents must be >= 0", i)
+		}
+		if d.TaxRate < 0 || d.TaxRate > 100 {
+			return fmt.Errorf("items[%d].tax_rate must be between 0 and 100", i)
 		}
 	}
 	if inv.Payment.IBAN == "" || inv.Payment.BIC == "" {
-		return fmt.Errorf("PaymentDetails IBAN and BIC are required")
+		return fmt.Errorf("payment.iban and payment.bic are required")
+	}
+	if err := validateIBAN(inv.Payment.IBAN); err != nil {
+		return fmt.Errorf("payment.iban: %w", err)
+	}
+	if err := validateBIC(inv.Payment.BIC); err != nil {
+		return fmt.Errorf("payment.bic: %w", err)
 	}
 	return nil
 }

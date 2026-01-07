@@ -20,14 +20,26 @@ func main() {
 
 	mux := http.NewServeMux()
 	
+	// Static files (landing page and assets)
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/" {
+			http.ServeFile(w, r, "static/index.html")
+		} else if r.URL.Path == "/script.js" {
+			http.ServeFile(w, r, "static/script.js")
+		} else {
+			http.NotFound(w, r)
+		}
+	})
+	
 	// Public endpoints
 	mux.HandleFunc("/buy", handleBuy)
 	mux.HandleFunc("/success", handleSuccess)
 	mux.HandleFunc("/cancel", handleCancel)
 	mux.HandleFunc("/webhook", handleWebhook)
+	mux.HandleFunc("/api-keys/free", handleFreeTierSignup)
 	
-	// Protected endpoints (require Stripe API key)
-	mux.Handle("/generate", StripeAuthMiddleware(http.HandlerFunc(generateHandler)))
+	// Protected endpoints (require Stripe API key + rate limiting)
+	mux.Handle("/generate", RateLimitMiddleware(StripeAuthMiddleware(http.HandlerFunc(generateHandler))))
 
 	addr := ":8080"
 	if v := os.Getenv("PORT"); v != "" {
@@ -48,18 +60,32 @@ func main() {
 func generateHandler(w http.ResponseWriter, r *http.Request) {
 	var in InvoiceJSON
 	if err := decodeJSON(r.Body, &in); err != nil {
-		http.Error(w, "invalid JSON: "+err.Error(), http.StatusBadRequest)
+		writeError(w, http.StatusBadRequest, ErrCodeInvalidJSON, "Invalid JSON payload", err.Error())
 		return
 	}
 
 	if err := validateInvoice(in); err != nil {
-		http.Error(w, "validation error: "+err.Error(), http.StatusBadRequest)
+		writeError(w, http.StatusBadRequest, ErrCodeValidationError, "Validation failed", err.Error())
 		return
+	}
+
+	// Check if free tier and increment usage
+	apiKey := r.Header.Get("X-API-KEY")
+	if len(apiKey) > 7 && apiKey[:7] == "at_test_" {
+		// Free tier - find customer and increment usage
+		ctx := r.Context()
+		cust, err := findCustomerByAPIKey(ctx, apiKey)
+		if err == nil && cust != nil {
+			if err := incrementFreeTierUsage(ctx, cust.ID); err != nil {
+				log.Printf("Failed to increment free tier usage: %v", err)
+				// Don't fail the request, just log
+			}
+		}
 	}
 
 	xmlBytes, err := TransformToEbInterface(in)
 	if err != nil {
-		http.Error(w, "transform error: "+err.Error(), http.StatusInternalServerError)
+		writeError(w, http.StatusInternalServerError, ErrCodeInternalError, "Failed to generate invoice", err.Error())
 		return
 	}
 
