@@ -1,0 +1,37 @@
+{
+    "invoice_number": "RE-2026-001",
+    "invoice_date": "2026-01-07",
+    "biller": {
+        "name": "Your Startup GmbH",
+        "vat_id": "ATU13585627",
+        "biller_id": "123456",
+        "email": "billing@yourstartup.at",
+        "address": {
+            "street": "Hauptstraße 1",
+            "zip": "1010",
+            "city": "Wien"
+        }
+    },
+    "recipient": {
+        "name": "Bundesrechenzentrum GmbH",
+        "vat_id": "ATU38516405",
+        "order_id": "1234567890",
+        "address": {
+            "street": "Hintere Zollamtsstraße 4",
+            "zip": "1030",
+            "city": "Wien"
+        }
+    },
+    "items": [
+        {
+            "description": "Software Consulting",
+            "quantity": 10,
+            "unit_price_cents": 12000,
+            "tax_rate": 20
+        }
+    ],
+    "payment": {
+        "iban": "AT123400000000005678",
+        "bic": "BKAUATWW"
+    }
+}
