@@ -24,6 +24,8 @@ func main() {
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path == "/" {
 			http.ServeFile(w, r, "static/index.html")
+		} else if r.URL.Path == "/generator" {
+			http.ServeFile(w, r, "static/generator.html")
 		} else if r.URL.Path == "/script.js" {
 			http.ServeFile(w, r, "static/script.js")
 		} else {
