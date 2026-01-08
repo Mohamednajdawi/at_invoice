@@ -1,0 +1,37 @@
+{
+    "invoice_number": "2026-001",
+    "invoice_date": "2026-01-08",
+    "biller": {
+        "name": "Freelance Developer",
+        "vat_id": "ATU61974703",
+        "biller_id": "FD-2026",
+        "email": "dev@freelancer.at",
+        "address": {
+            "street": "Neubaugasse 42",
+            "zip": "1070",
+            "city": "Wien"
+        }
+    },
+    "recipient": {
+        "name": "Startup Innovation Hub GmbH",
+        "vat_id": "ATU61976809",
+        "order_id": "1234567890",
+        "address": {
+            "street": "Spittelauer Lände 12",
+            "zip": "1090",
+            "city": "Wien"
+        }
+    },
+    "items": [
+        {
+            "description": "Mobile App Development - MVP Phase",
+            "quantity": 1,
+            "unit_price_cents": 450000,
+            "tax_rate": 20
+        }
+    ],
+    "payment": {
+        "iban": "AT611904300234573201",
+        "bic": "BKAUATWW"
+    }
+}

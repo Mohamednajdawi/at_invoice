@@ -1,0 +1,45 @@
+{
+    "invoice_number": "INV-2026-999",
+    "invoice_date": "2026-01-05",
+    "biller": {
+        "name": "Consulting Partners Austria GmbH",
+        "vat_id": "ATU61974703",
+        "biller_id": "CP-001",
+        "email": "billing@consulting-partners.at",
+        "contact_name": "Dr. Thomas Wagner",
+        "address": {
+            "street": "Kärntner Ring 5-7",
+            "zip": "1010",
+            "city": "Wien"
+        }
+    },
+    "recipient": {
+        "name": "Wiener Stadtwerke GmbH",
+        "vat_id": "ATU41852608",
+        "order_id": "WSW-2025-8765",
+        "email": "einkauf@wstw.at",
+        "address": {
+            "street": "Thomas-Klestil-Platz 14",
+            "zip": "1030",
+            "city": "Wien"
+        }
+    },
+    "items": [
+        {
+            "description": "IT-Beratung Senior Consultant",
+            "quantity": 160,
+            "unit_price_cents": 18500,
+            "tax_rate": 20
+        },
+        {
+            "description": "Projektmanagement",
+            "quantity": 80,
+            "unit_price_cents": 21000,
+            "tax_rate": 20
+        }
+    ],
+    "payment": {
+        "iban": "AT021200000012345678",
+        "bic": "BKAUATWW"
+    }
+}

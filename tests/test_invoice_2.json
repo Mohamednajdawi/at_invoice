@@ -1,0 +1,52 @@
+{
+    "invoice_number": "RE-2026-042",
+    "invoice_date": "2026-01-08",
+    "biller": {
+        "name": "Tech Solutions Wien GmbH",
+        "vat_id": "ATU66889564",
+        "biller_id": "987654",
+        "email": "invoices@techsolutions.at",
+        "contact_name": "Maria Schmidt",
+        "address": {
+            "street": "Mariahilfer Straße 123",
+            "zip": "1070",
+            "city": "Wien"
+        }
+    },
+    "recipient": {
+        "name": "Österreichische Post AG",
+        "vat_id": "ATU55381503",
+        "order_id": "PO-2026-001",
+        "email": "procurement@post.at",
+        "contact_name": "Hans Müller",
+        "address": {
+            "street": "Rochusplatz 1",
+            "zip": "1030",
+            "city": "Wien"
+        }
+    },
+    "items": [
+        {
+            "description": "Webdesign und Development",
+            "quantity": 40,
+            "unit_price_cents": 15000,
+            "tax_rate": 20
+        },
+        {
+            "description": "SEO Optimierung - monatliche Betreuung",
+            "quantity": 3,
+            "unit_price_cents": 80000,
+            "tax_rate": 20
+        },
+        {
+            "description": "Hosting Gebühren (Jahrespaket)",
+            "quantity": 1,
+            "unit_price_cents": 120000,
+            "tax_rate": 20
+        }
+    ],
+    "payment": {
+        "iban": "AT611904300234573201",
+        "bic": "BKAUATWW"
+    }
+}
