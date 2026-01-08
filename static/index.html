@@ -47,16 +47,14 @@
     <nav class="fixed top-0 w-full z-50 glass-effect border-b border-slate-200">
         <div class="flex items-center justify-between px-6 lg:px-8 py-4 max-w-7xl mx-auto">
             <div class="flex items-center gap-2">
-                <div class="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center">
-                    <i class="fa-solid fa-file-invoice text-white text-sm"></i>
-                </div>
+                <img src="/logo.svg" alt="AT-Invoice" class="w-8 h-8"/>
                 <span class="text-xl font-bold tracking-tight">AT-Invoice</span>
             </div>
             <div class="hidden md:flex items-center space-x-8 font-medium text-slate-600 text-sm">
                 <a href="#features" class="hover:text-slate-900 transition">Funktionen</a>
                 <a href="#integration" class="hover:text-slate-900 transition">Integration</a>
                 <a href="#pricing" class="hover:text-slate-900 transition">Preise</a>
-                <a href="#docs" class="hover:text-slate-900 transition">Dokumentation</a>
+                <a href="/docs" class="hover:text-slate-900 transition">Dokumentation</a>
                 <a href="/generator" class="hover:text-slate-900 transition">Generator</a>
             </div>
             <div class="flex items-center gap-3">
@@ -107,6 +105,12 @@
             </div>
         </div>
     </header>
+
+    <section class="bg-gradient-to-b from-white to-slate-50 py-16">
+        <div class="max-w-5xl mx-auto px-6 lg:px-8">
+            <img src="/hero-illustration.svg" alt="JSON to ebInterface XML transformation workflow" class="w-full h-auto"/>
+        </div>
+    </section>
 
     <section class="bg-slate-50 py-12 border-y border-slate-200">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
@@ -184,48 +188,48 @@
             
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <div class="bg-white p-6 rounded-xl border border-slate-200">
-                    <div class="w-12 h-12 bg-slate-100 text-slate-700 rounded-lg flex items-center justify-center mb-4">
-                        <i class="fa-solid fa-file-code text-xl"></i>
+                    <div class="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mb-4">
+                        <img src="/json-to-xml.svg" alt="JSON to XML" class="w-8 h-8"/>
                     </div>
                     <h3 class="text-lg font-semibold mb-2">JSON to XML</h3>
                     <p class="text-slate-600 text-sm leading-relaxed">Senden Sie strukturierte JSON-Daten, erhalten Sie ebInterface 6.1 konformes XML zurück.</p>
                 </div>
                 
                 <div class="bg-white p-6 rounded-xl border border-slate-200">
-                    <div class="w-12 h-12 bg-slate-100 text-slate-700 rounded-lg flex items-center justify-center mb-4">
-                        <i class="fa-solid fa-check-circle text-xl"></i>
+                    <div class="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mb-4">
+                        <img src="/validation.svg" alt="Validierung" class="w-8 h-8"/>
                     </div>
                     <h3 class="text-lg font-semibold mb-2">Validierung</h3>
                     <p class="text-slate-600 text-sm leading-relaxed">Automatische Validierung aller Pflichtfelder und Formate (VAT-ID, IBAN, BIC).</p>
                 </div>
                 
                 <div class="bg-white p-6 rounded-xl border border-slate-200">
-                    <div class="w-12 h-12 bg-slate-100 text-slate-700 rounded-lg flex items-center justify-center mb-4">
-                        <i class="fa-solid fa-gauge text-xl"></i>
+                    <div class="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mb-4">
+                        <img src="/speed_performance.svg" alt="Schnell" class="w-8 h-8"/>
                     </div>
                     <h3 class="text-lg font-semibold mb-2">Schnell</h3>
                     <p class="text-slate-600 text-sm leading-relaxed">Response-Zeit unter 200ms. Go-Backend auf Railway gehostet.</p>
                 </div>
                 
                 <div class="bg-white p-6 rounded-xl border border-slate-200">
-                    <div class="w-12 h-12 bg-slate-100 text-slate-700 rounded-lg flex items-center justify-center mb-4">
-                        <i class="fa-solid fa-lock text-xl"></i>
+                    <div class="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mb-4">
+                        <img src="/no-storage_security.svg" alt="Keine Speicherung" class="w-8 h-8"/>
                     </div>
                     <h3 class="text-lg font-semibold mb-2">Keine Speicherung</h3>
                     <p class="text-slate-600 text-sm leading-relaxed">Ihre Rechnungsdaten werden nicht gespeichert. Verarbeitung nur im RAM.</p>
                 </div>
                 
                 <div class="bg-white p-6 rounded-xl border border-slate-200">
-                    <div class="w-12 h-12 bg-slate-100 text-slate-700 rounded-lg flex items-center justify-center mb-4">
-                        <i class="fa-solid fa-key text-xl"></i>
+                    <div class="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mb-4">
+                        <img src="/api-key.svg" alt="API-Key Auth" class="w-8 h-8"/>
                     </div>
                     <h3 class="text-lg font-semibold mb-2">API-Key Auth</h3>
                     <p class="text-slate-600 text-sm leading-relaxed">Einfache Authentifizierung per X-API-KEY Header. Verwaltung über Stripe.</p>
                 </div>
                 
                 <div class="bg-white p-6 rounded-xl border border-slate-200">
-                    <div class="w-12 h-12 bg-slate-100 text-slate-700 rounded-lg flex items-center justify-center mb-4">
-                        <i class="fa-solid fa-browser text-xl"></i>
+                    <div class="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center mb-4">
+                        <img src="/web-generator.svg" alt="Web Generator" class="w-8 h-8"/>
                     </div>
                     <h3 class="text-lg font-semibold mb-2">Web Generator</h3>
                     <p class="text-slate-600 text-sm leading-relaxed">Drag & Drop Interface für manuelle Uploads ohne Code.</p>
@@ -358,9 +362,7 @@
             <div class="grid md:grid-cols-4 gap-12 mb-12">
                 <div class="col-span-2 md:col-span-1">
                     <div class="flex items-center gap-2 mb-4">
-                        <div class="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center">
-                            <i class="fa-solid fa-file-invoice text-white text-sm"></i>
-                        </div>
+                        <img src="/logo.svg" alt="AT-Invoice" class="w-8 h-8"/>
                         <span class="text-xl font-bold text-white">AT-Invoice</span>
                     </div>
                     <p class="text-sm leading-relaxed">Professionelle ebInterface-Lösungen für österreichische Unternehmen.</p>

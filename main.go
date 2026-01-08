@@ -19,27 +19,45 @@ func main() {
 	}
 
 	mux := http.NewServeMux()
-	
+
 	// Static files (landing page and assets)
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path == "/" {
 			http.ServeFile(w, r, "static/index.html")
 		} else if r.URL.Path == "/generator" {
 			http.ServeFile(w, r, "static/generator.html")
+		} else if r.URL.Path == "/docs" {
+			http.ServeFile(w, r, "static/docs.html")
 		} else if r.URL.Path == "/script.js" {
 			http.ServeFile(w, r, "static/script.js")
+		} else if r.URL.Path == "/logo.svg" {
+			http.ServeFile(w, r, "static/logo.svg")
+		} else if r.URL.Path == "/hero-illustration.svg" {
+			http.ServeFile(w, r, "static/hero-illustration.svg")
+		} else if r.URL.Path == "/json-to-xml.svg" {
+			http.ServeFile(w, r, "static/json-to-xml.svg")
+		} else if r.URL.Path == "/validation.svg" {
+			http.ServeFile(w, r, "static/validation.svg")
+		} else if r.URL.Path == "/speed_performance.svg" {
+			http.ServeFile(w, r, "static/speed_performance.svg")
+		} else if r.URL.Path == "/no-storage_security.svg" {
+			http.ServeFile(w, r, "static/no-storage_security.svg")
+		} else if r.URL.Path == "/api-key.svg" {
+			http.ServeFile(w, r, "static/api-key.svg")
+		} else if r.URL.Path == "/web-generator.svg" {
+			http.ServeFile(w, r, "static/web-generator.svg")
 		} else {
 			http.NotFound(w, r)
 		}
 	})
-	
+
 	// Public endpoints
 	mux.HandleFunc("/buy", handleBuy)
 	mux.HandleFunc("/success", handleSuccess)
 	mux.HandleFunc("/cancel", handleCancel)
 	mux.HandleFunc("/webhook", handleWebhook)
 	mux.HandleFunc("/api-keys/free", handleFreeTierSignup)
-	
+
 	// Protected endpoints (require Stripe API key + rate limiting)
 	mux.Handle("/generate", RateLimitMiddleware(StripeAuthMiddleware(http.HandlerFunc(generateHandler))))
 
@@ -53,7 +71,7 @@ func main() {
 	log.Printf("  POST /generate - Generate invoice (requires X-API-KEY)")
 	log.Printf("  GET  /buy - Subscribe to service")
 	log.Printf("  POST /webhook - Stripe webhook handler")
-	
+
 	if err := http.ListenAndServe(addr, mux); err != nil {
 		log.Fatalf("server error: %v", err)
 	}
@@ -96,5 +114,3 @@ func generateHandler(w http.ResponseWriter, r *http.Request) {
 		log.Printf("write response error: %v", err)
 	}
 }
-
-

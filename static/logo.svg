@@ -1,0 +1,38 @@
+<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <title>AT-Invoice Logo</title>
+  <!-- Left side: JSON curly braces -->
+  <path d="M 8 6 Q 6 6 6 8 L 6 13 Q 6 14 5 14 Q 6 14 6 15 L 6 20 Q 6 22 8 22" 
+        stroke="#dc2626" 
+        stroke-width="2" 
+        fill="none" 
+        stroke-linecap="round"/>
+  
+  <!-- Right side: XML angle brackets -->
+  <path d="M 18 10 L 22 16 L 18 22" 
+        stroke="#0f172a" 
+        stroke-width="2" 
+        fill="none" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+  
+  <path d="M 26 10 L 30 16 L 26 22" 
+        stroke="#0f172a" 
+        stroke-width="2" 
+        fill="none" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+  
+  <!-- Transformation arrow -->
+  <path d="M 11 16 L 15 16" 
+        stroke="#dc2626" 
+        stroke-width="1.5" 
+        fill="none" 
+        stroke-linecap="round"/>
+  
+  <path d="M 13.5 14 L 15 16 L 13.5 18" 
+        stroke="#dc2626" 
+        stroke-width="1.5" 
+        fill="none" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Dokumentation | AT-Invoice</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .code-block { 
+            background: #0f172a; 
+            font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900">
+
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="flex items-center justify-between px-6 lg:px-8 py-4 max-w-6xl mx-auto">
+            <div class="flex items-center gap-2">
+                <img src="/logo.svg" alt="AT-Invoice" class="w-8 h-8"/>
+                <span class="text-xl font-bold">AT-Invoice</span>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="/" class="text-slate-600 hover:text-slate-900 text-sm font-medium">Home</a>
+                <a href="/generator" class="text-slate-600 hover:text-slate-900 text-sm font-medium">Generator</a>
+                <a href="/buy" class="bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-red-700 transition">API-Key kaufen</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-4xl mx-auto px-6 py-12">
+        
+        <h1 class="text-4xl font-bold mb-4">API Dokumentation</h1>
+        <p class="text-lg text-slate-600 mb-12">REST API für ebInterface 6.1 XML Generierung</p>
+
+        <!-- Quick Start -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-4">Quick Start</h2>
+            <ol class="space-y-3 text-slate-700">
+                <li class="flex gap-3">
+                    <span class="font-bold text-red-600">1.</span>
+                    <span>API-Key kaufen unter <a href="/buy" class="text-red-600 underline">/buy</a></span>
+                </li>
+                <li class="flex gap-3">
+                    <span class="font-bold text-red-600">2.</span>
+                    <span>API-Key per E-Mail erhalten</span>
+                </li>
+                <li class="flex gap-3">
+                    <span class="font-bold text-red-600">3.</span>
+                    <span>POST Request an <code class="bg-slate-200 px-2 py-0.5 rounded text-sm">/generate</code></span>
+                </li>
+            </ol>
+        </section>
+
+        <!-- Endpoint -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-4">Endpoint</h2>
+            <div class="bg-white border border-slate-200 rounded-lg p-4">
+                <div class="flex items-center gap-3">
+                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded font-semibold text-sm">POST</span>
+                    <code class="text-lg font-mono">https://web-production-b0d1d.up.railway.app/generate</code>
+                </div>
+            </div>
+        </section>
+
+        <!-- Authentication -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-4">Authentifizierung</h2>
+            <p class="text-slate-700 mb-4">API-Key im Header senden:</p>
+            <div class="code-block rounded-lg p-4 text-slate-300">
+                <pre>X-API-KEY: at_live_...</pre>
+            </div>
+        </section>
+
+        <!-- Request Format -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-4">Request Format</h2>
+            <p class="text-slate-700 mb-4">JSON Body mit folgenden Feldern:</p>
+            
+            <div class="bg-white border border-slate-200 rounded-lg overflow-hidden">
+                <table class="w-full text-sm">
+                    <thead class="bg-slate-100">
+                        <tr>
+                            <th class="text-left p-3 font-semibold">Feld</th>
+                            <th class="text-left p-3 font-semibold">Typ</th>
+                            <th class="text-left p-3 font-semibold">Pflicht</th>
+                            <th class="text-left p-3 font-semibold">Beschreibung</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200">
+                        <tr>
+                            <td class="p-3 font-mono text-xs">invoice_number</td>
+                            <td class="p-3 text-slate-600">string</td>
+                            <td class="p-3 text-green-600">Ja</td>
+                            <td class="p-3 text-slate-600">Rechnungsnummer</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-mono text-xs">invoice_date</td>
+                            <td class="p-3 text-slate-600">string</td>
+                            <td class="p-3 text-green-600">Ja</td>
+                            <td class="p-3 text-slate-600">Format: YYYY-MM-DD</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-mono text-xs">biller</td>
+                            <td class="p-3 text-slate-600">object</td>
+                            <td class="p-3 text-green-600">Ja</td>
+                            <td class="p-3 text-slate-600">Rechnungssteller</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-mono text-xs pl-8">biller.name</td>
+                            <td class="p-3 text-slate-600">string</td>
+                            <td class="p-3 text-green-600">Ja</td>
+                            <td class="p-3 text-slate-600">Firmenname</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-mono text-xs pl-8">biller.vat_id</td>
+                            <td class="p-3 text-slate-600">string</td>
+                            <td class="p-3 text-green-600">Ja</td>
+                            <td class="p-3 text-slate-600">Format: ATU12345678</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-mono text-xs pl-8">biller.address</td>
+                            <td class="p-3 text-slate-600">object</td>
+                            <td class="p-3 text-green-600">Ja</td>
+                            <td class="p-3 text-slate-600">Adresse</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-mono text-xs pl-8">biller.email</td>
+                            <td class="p-3 text-slate-600">string</td>
+                            <td class="p-3 text-green-600">Ja</td>
+                            <td class="p-3 text-slate-600">E-Mail</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-mono text-xs">recipient</td>
+                            <td class="p-3 text-slate-600">object</td>
+                            <td class="p-3 text-green-600">Ja</td>
+                            <td class="p-3 text-slate-600">Rechnungsempfänger</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-mono text-xs pl-8">recipient.name</td>
+                            <td class="p-3 text-slate-600">string</td>
+                            <td class="p-3 text-green-600">Ja</td>
+                            <td class="p-3 text-slate-600">Firmenname</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-mono text-xs pl-8">recipient.vat_id</td>
+                            <td class="p-3 text-slate-600">string</td>
+                            <td class="p-3 text-green-600">Ja</td>
+                            <td class="p-3 text-slate-600">Format: ATU12345678</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-mono text-xs pl-8">recipient.order_id</td>
+                            <td class="p-3 text-slate-600">string</td>
+                            <td class="p-3 text-green-600">Ja</td>
+                            <td class="p-3 text-slate-600">Nur Zahlen</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-mono text-xs">items</td>
+                            <td class="p-3 text-slate-600">array</td>
+                            <td class="p-3 text-green-600">Ja</td>
+                            <td class="p-3 text-slate-600">Rechnungspositionen</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-mono text-xs pl-8">items[].description</td>
+                            <td class="p-3 text-slate-600">string</td>
+                            <td class="p-3 text-green-600">Ja</td>
+                            <td class="p-3 text-slate-600">Beschreibung</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-mono text-xs pl-8">items[].quantity</td>
+                            <td class="p-3 text-slate-600">number</td>
+                            <td class="p-3 text-green-600">Ja</td>
+                            <td class="p-3 text-slate-600">Menge</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-mono text-xs pl-8">items[].unit_price_cents</td>
+                            <td class="p-3 text-slate-600">number</td>
+                            <td class="p-3 text-green-600">Ja</td>
+                            <td class="p-3 text-slate-600">Preis in Cent</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-mono text-xs pl-8">items[].tax_rate</td>
+                            <td class="p-3 text-slate-600">number</td>
+                            <td class="p-3 text-green-600">Ja</td>
+                            <td class="p-3 text-slate-600">20, 10, oder 0</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-mono text-xs">payment</td>
+                            <td class="p-3 text-slate-600">object</td>
+                            <td class="p-3 text-green-600">Ja</td>
+                            <td class="p-3 text-slate-600">Zahlungsdaten</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-mono text-xs pl-8">payment.iban</td>
+                            <td class="p-3 text-slate-600">string</td>
+                            <td class="p-3 text-green-600">Ja</td>
+                            <td class="p-3 text-slate-600">AT + 18 Ziffern</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-mono text-xs pl-8">payment.bic</td>
+                            <td class="p-3 text-slate-600">string</td>
+                            <td class="p-3 text-green-600">Ja</td>
+                            <td class="p-3 text-slate-600">8 oder 11 Zeichen</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Example Request -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-4">Beispiel Request</h2>
+            <div class="code-block rounded-lg p-4 text-slate-300 overflow-x-auto">
+<pre>curl -X POST https://web-production-b0d1d.up.railway.app/generate \
+  -H "X-API-KEY: at_live_..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "invoice_number": "RE-2026-001",
+    "invoice_date": "2026-01-08",
+    "biller": {
+      "name": "Musterfirma GmbH",
+      "vat_id": "ATU13585627",
+      "biller_id": "1234567890",
+      "address": {
+        "street": "Hauptstraße 1",
+        "zip": "1010",
+        "city": "Wien",
+        "country": "AT"
+      },
+      "email": "office@musterfirma.at"
+    },
+    "recipient": {
+      "name": "Kunde AG",
+      "vat_id": "ATU38516405",
+      "order_id": "9876543210",
+      "address": {
+        "street": "Teststraße 5",
+        "zip": "4020",
+        "city": "Linz",
+        "country": "AT"
+      }
+    },
+    "items": [{
+      "description": "Beratungsleistung",
+      "quantity": 10,
+      "unit_price_cents": 12000,
+      "tax_rate": 20
+    }],
+    "payment": {
+      "iban": "AT611904300234573201",
+      "bic": "BKAUATWW"
+    }
+  }'</pre>
+            </div>
+        </section>
+
+        <!-- Response -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-4">Response</h2>
+            <p class="text-slate-700 mb-4">Bei Erfolg:</p>
+            <div class="bg-white border border-slate-200 rounded-lg p-4 mb-4">
+                <div class="flex items-center gap-3 mb-2">
+                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded font-semibold text-sm">200 OK</span>
+                </div>
+                <p class="text-sm text-slate-600">Content-Type: application/xml</p>
+                <p class="text-sm text-slate-600 mt-2">Body: ebInterface 6.1 XML</p>
+            </div>
+
+            <p class="text-slate-700 mb-4">Bei Fehler:</p>
+            <div class="bg-white border border-slate-200 rounded-lg overflow-hidden">
+                <table class="w-full text-sm">
+                    <thead class="bg-slate-100">
+                        <tr>
+                            <th class="text-left p-3 font-semibold">Code</th>
+                            <th class="text-left p-3 font-semibold">Bedeutung</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-200">
+                        <tr>
+                            <td class="p-3 font-mono text-red-600">400</td>
+                            <td class="p-3 text-slate-600">Ungültiges JSON oder fehlende Pflichtfelder</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-mono text-red-600">401</td>
+                            <td class="p-3 text-slate-600">Ungültiger oder fehlender API-Key</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-mono text-red-600">429</td>
+                            <td class="p-3 text-slate-600">Rate Limit überschritten</td>
+                        </tr>
+                        <tr>
+                            <td class="p-3 font-mono text-red-600">500</td>
+                            <td class="p-3 text-slate-600">Server Fehler</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Validation -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-4">Validierung</h2>
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                <h3 class="font-semibold mb-2 text-yellow-900">Wichtige Formate:</h3>
+                <ul class="space-y-2 text-sm text-yellow-900">
+                    <li><strong>VAT-ID:</strong> ATU + 8 Ziffern (z.B. ATU13585627)</li>
+                    <li><strong>IBAN:</strong> AT + 18 Ziffern mit gültiger Prüfziffer</li>
+                    <li><strong>BIC:</strong> 8 oder 11 alphanumerische Zeichen</li>
+                    <li><strong>order_id / biller_id:</strong> Nur Zahlen, keine Bindestriche</li>
+                    <li><strong>Datum:</strong> YYYY-MM-DD Format</li>
+                    <li><strong>Preise:</strong> In Cent (12000 = 120.00 EUR)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Rate Limits -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-4">Rate Limits</h2>
+            <div class="bg-white border border-slate-200 rounded-lg p-4">
+                <p class="text-slate-700 mb-2"><strong>Business Plan:</strong> 1000 Requests pro Stunde</p>
+                <p class="text-sm text-slate-600">Bei Überschreitung: HTTP 429 Response</p>
+            </div>
+        </section>
+
+        <!-- Support -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-4">Support</h2>
+            <div class="bg-white border border-slate-200 rounded-lg p-4">
+                <p class="text-slate-700 mb-2">E-Mail: <a href="mailto:najdawimohamed@gmail.com" class="text-red-600 underline">najdawimohamed@gmail.com</a></p>
+                <p class="text-sm text-slate-600">Antwortzeit: 24-48 Stunden</p>
+            </div>
+        </section>
+
+    </div>
+
+    <footer class="bg-slate-900 text-slate-400 py-12 mt-20">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <p class="text-sm">&copy; 2026 AT-Invoice. ebInterface 6.1 REST API Service.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
