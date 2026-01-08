@@ -1,0 +1,29 @@
+# Test files
+test_sendgrid.go
+
+# Git
+.git
+.gitignore
+
+# Environment
+.env
+.env.local
+
+# Documentation
+docs/
+*.md
+README.md
+
+# Tests
+*_test.go
+tests/
+
+# IDE
+.vscode/
+.idea/
+
+# Build artifacts
+*.exe
+*.dll
+*.so
+*.dylib
