@@ -23,12 +23,12 @@ type InvoiceJSON struct {
 }
 
 type BillerJSON struct {
-	Name        string       `json:"name"`
-	VATID       string       `json:"vat_id"`
-	BillerID    string       `json:"biller_id"`
-	Email       string       `json:"email,omitempty"`
-	ContactName string       `json:"contact_name,omitempty"`
-	Address     AddressJSON  `json:"address"`
+	Name        string      `json:"name"`
+	VATID       string      `json:"vat_id"`
+	BillerID    string      `json:"biller_id"`
+	Email       string      `json:"email,omitempty"`
+	ContactName string      `json:"contact_name,omitempty"`
+	Address     AddressJSON `json:"address"`
 }
 
 type RecipientJSON struct {
@@ -47,10 +47,10 @@ type AddressJSON struct {
 }
 
 type LineItemJSON struct {
-	Description     string  `json:"description"`
-	Quantity        int64   `json:"quantity"`
-	UnitPriceCents  int64   `json:"unit_price_cents"`
-	TaxRate         float64 `json:"tax_rate"`
+	Description    string  `json:"description"`
+	Quantity       int64   `json:"quantity"`
+	UnitPriceCents int64   `json:"unit_price_cents"`
+	TaxRate        float64 `json:"tax_rate"`
 }
 
 type PaymentDetails struct {
@@ -72,21 +72,21 @@ type EbTax struct {
 // InvoiceNumber, InvoiceDate, Biller, InvoiceRecipient, Details, Tax, TotalGrossAmount, PayableAmount, PaymentMethod
 // Note: There is NO InvoiceSummary element in ebInterface 6.1 - tax summary is in Tax element
 type EbInterfaceInvoice struct {
-	XMLName          xml.Name            `xml:"http://www.ebinterface.at/schema/6p1/ Invoice"`
-	GeneratingSystem string              `xml:"GeneratingSystem,attr"`
-	DocumentType     string              `xml:"DocumentType,attr"`
-	InvoiceCurrency  string              `xml:"InvoiceCurrency,attr"`
-	Language         string              `xml:"Language,attr"`
-	InvoiceNumber    string              `xml:"InvoiceNumber"`
-	InvoiceDate      string              `xml:"InvoiceDate"`
-	Delivery         *EbDelivery         `xml:"Delivery,omitempty"` // Optional delivery information
-	Biller           EbBiller            `xml:"Biller"`
-	InvoiceRecipient EbRecipient         `xml:"InvoiceRecipient"`
-	Details          EbDetails           `xml:"Details"`
-	Tax              EbTax               `xml:"Tax"`                    // REQUIRED after Details - contains tax summary
-	TotalGrossAmount string              `xml:"TotalGrossAmount"`       // Direct child of Invoice
-	PayableAmount    string              `xml:"PayableAmount"`          // Direct child of Invoice
-	PaymentMethod EbPaymentMethod `xml:"PaymentMethod"` // PaymentMethod (not PaymentInstructions)
+	XMLName          xml.Name        `xml:"http://www.ebinterface.at/schema/6p1/ Invoice"`
+	GeneratingSystem string          `xml:"GeneratingSystem,attr"`
+	DocumentType     string          `xml:"DocumentType,attr"`
+	InvoiceCurrency  string          `xml:"InvoiceCurrency,attr"`
+	Language         string          `xml:"Language,attr"`
+	InvoiceNumber    string          `xml:"InvoiceNumber"`
+	InvoiceDate      string          `xml:"InvoiceDate"`
+	Delivery         *EbDelivery     `xml:"Delivery,omitempty"` // Optional delivery information
+	Biller           EbBiller        `xml:"Biller"`
+	InvoiceRecipient EbRecipient     `xml:"InvoiceRecipient"`
+	Details          EbDetails       `xml:"Details"`
+	Tax              EbTax           `xml:"Tax"`              // REQUIRED after Details - contains tax summary
+	TotalGrossAmount string          `xml:"TotalGrossAmount"` // Direct child of Invoice
+	PayableAmount    string          `xml:"PayableAmount"`    // Direct child of Invoice
+	PaymentMethod    EbPaymentMethod `xml:"PaymentMethod"`    // PaymentMethod (not PaymentInstructions)
 	// Note: Extensions removed - not in official ebInterface 6.1 example
 	// Optional elements after PaymentMethod: PaymentConditions, Comment, Extension (singular)
 }
@@ -132,10 +132,10 @@ type EbBiller struct {
 
 // EbRecipient follows strict element order: VATID, OrderReference, Address, Contact.
 type EbRecipient struct {
-	VATID          string          `xml:"VATIdentificationNumber"`
+	VATID          string           `xml:"VATIdentificationNumber"`
 	OrderReference EbOrderReference `xml:"OrderReference"`
-	Address        EbAddress       `xml:"Address"`
-	Contact        EbContact       `xml:"Contact"`
+	Address        EbAddress        `xml:"Address"`
+	Contact        EbContact        `xml:"Contact"`
 }
 
 // EbOrderReference wraps the Austrian B2G order number in an OrderID element.
@@ -159,25 +159,25 @@ type EbQuantity struct {
 
 // EbOrderReferenceItem represents order reference for a line item.
 type EbOrderReferenceItem struct {
-	OrderID            string `xml:"OrderID"`            // Order ID from recipient
+	OrderID             string `xml:"OrderID"`             // Order ID from recipient
 	OrderPositionNumber string `xml:"OrderPositionNumber"` // Position number in order (required if OrderID is present)
 }
 
 // EbItem represents a single line item in the invoice.
 // Element order: Description, Quantity, UnitPrice, InvoiceRecipientsOrderReference (optional), TaxItem, LineItemAmount
 type EbItem struct {
-	Description                    string                 `xml:"Description"`
-	Quantity                       EbQuantity             `xml:"Quantity"`
-	UnitPrice                      string                 `xml:"UnitPrice"`                      // Decimal string (e.g., "120.00")
+	Description                     string                `xml:"Description"`
+	Quantity                        EbQuantity            `xml:"Quantity"`
+	UnitPrice                       string                `xml:"UnitPrice"` // Decimal string (e.g., "120.00")
 	InvoiceRecipientsOrderReference *EbOrderReferenceItem `xml:"InvoiceRecipientsOrderReference,omitempty"`
-	TaxItem                        EbTaxItem              `xml:"TaxItem"`
-	LineItemAmount                 string                 `xml:"LineItemAmount"`                 // Decimal string (e.g., "1200.00") - MUST come after TaxItem
+	TaxItem                         EbTaxItem             `xml:"TaxItem"`
+	LineItemAmount                  string                `xml:"LineItemAmount"` // Decimal string (e.g., "1200.00") - MUST come after TaxItem
 }
 
 // EbTaxPercent represents the tax rate with category code as an attribute.
 type EbTaxPercent struct {
 	TaxCategoryCode string  `xml:"TaxCategoryCode,attr"` // e.g., S
-	Value            float64 `xml:",chardata"`            // e.g., 20
+	Value           float64 `xml:",chardata"`            // e.g., 20
 }
 
 // EbTaxItem represents tax information for a line item (inside Details/ListLineItem).
@@ -221,7 +221,6 @@ type EbBeneficiaryAccount struct {
 type EbSimpleExtensions struct {
 	OriginalInvoiceNumber string `xml:"OriginalInvoiceNumber,omitempty"`
 }
-
 
 // -------- Utilities --------
 
@@ -347,4 +346,3 @@ func composeEbAddress(name string, a AddressJSON) EbAddress {
 		},
 	}
 }
-
