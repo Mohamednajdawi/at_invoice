@@ -352,26 +352,313 @@ func getCancelURL(r *http.Request) string {
 	return fmt.Sprintf("%s://%s/cancel", scheme, host)
 }
 
-// handleSuccess handles successful checkout redirect
+// handleSuccess handles successful checkout redirect and displays the API key
 func handleSuccess(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	fmt.Fprintf(w, `
+	
+	// Get session_id from query parameter (Stripe adds this automatically)
+	sessionID := r.URL.Query().Get("session_id")
+	if sessionID == "" {
+		// If no session_id, show generic success message
+		fmt.Fprintf(w, `
+			<!DOCTYPE html>
+			<html>
+			<head>
+				<title>Payment Successful</title>
+				<meta charset="UTF-8">
+				<style>
+					body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+					.success { color: green; font-size: 24px; }
+				</style>
+			</head>
+			<body>
+				<div class="success">✓ Payment Successful!</div>
+				<p>Your API key has been sent to your email address.</p>
+				<p>Check your inbox for your API key and start using the Austrian Invoice API.</p>
+			</body>
+			</html>
+		`)
+		return
+	}
+	
+	// Retrieve the checkout session from Stripe
+	sess, err := session.Get(sessionID, nil)
+	if err != nil {
+		log.Printf("Failed to retrieve checkout session: %v", err)
+		http.Error(w, "Failed to retrieve session information", http.StatusInternalServerError)
+		return
+	}
+	
+	// Get customer ID from session
+	var customerID string
+	if sess.Customer != nil {
+		customerID = sess.Customer.ID
+	} else if sess.CustomerDetails != nil && sess.CustomerDetails.Email != "" {
+		// For guest checkouts, try to find customer by email
+		// This is a fallback - ideally customer should be created in webhook
+		log.Printf("No customer ID in session, checking by email")
+		http.Error(w, "Please check your email for your API key", http.StatusOK)
+		return
+	}
+	
+	if customerID == "" {
+		log.Printf("No customer ID found in session")
+		http.Error(w, "Unable to retrieve customer information", http.StatusInternalServerError)
+		return
+	}
+	
+	// Retrieve customer to get API key from metadata
+	cust, err := customer.Get(customerID, nil)
+	if err != nil {
+		log.Printf("Failed to retrieve customer: %v", err)
+		http.Error(w, "Failed to retrieve customer information", http.StatusInternalServerError)
+		return
+	}
+	
+	// Get API key from customer metadata
+	apiKey := cust.Metadata["api_key"]
+	if apiKey == "" {
+		// API key might not be generated yet (webhook might be processing)
+		fmt.Fprintf(w, `
+			<!DOCTYPE html>
+			<html>
+			<head>
+				<title>Payment Successful</title>
+				<meta charset="UTF-8">
+				<style>
+					body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+					.success { color: green; font-size: 24px; }
+					.info { color: #666; margin-top: 20px; }
+				</style>
+			</head>
+			<body>
+				<div class="success">✓ Payment Successful!</div>
+				<div class="info">
+					<p>Your API key is being generated...</p>
+					<p>It will be sent to your email address shortly.</p>
+					<p>Please check your inbox.</p>
+				</div>
+			</body>
+			</html>
+		`)
+		return
+	}
+	
+	// Display the success page with API key
+	html := fmt.Sprintf(`
 		<!DOCTYPE html>
-		<html>
+		<html lang="de">
 		<head>
-			<title>Payment Successful</title>
+			<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<title>Zahlung erfolgreich - AT-Invoice</title>
 			<style>
-				body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
-				.success { color: green; font-size: 24px; }
+				* { margin: 0; padding: 0; box-sizing: border-box; }
+				body {
+					font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+					background: linear-gradient(135deg, #667eea 0%%, #764ba2 100%%);
+					min-height: 100vh;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					padding: 20px;
+				}
+				.container {
+					background: white;
+					border-radius: 16px;
+					box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+					max-width: 600px;
+					width: 100%%;
+					padding: 40px;
+					text-align: center;
+				}
+				.success-icon {
+					width: 80px;
+					height: 80px;
+					background: #10b981;
+					border-radius: 50%%;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					margin: 0 auto 24px;
+					font-size: 48px;
+					color: white;
+				}
+				h1 {
+					color: #1f2937;
+					font-size: 28px;
+					margin-bottom: 12px;
+				}
+				.subtitle {
+					color: #6b7280;
+					font-size: 16px;
+					margin-bottom: 32px;
+				}
+				.warning-box {
+					background: #fef3c7;
+					border: 2px solid #f59e0b;
+					border-radius: 8px;
+					padding: 16px;
+					margin-bottom: 24px;
+					text-align: left;
+				}
+				.warning-box strong {
+					color: #92400e;
+					display: block;
+					margin-bottom: 8px;
+					font-size: 14px;
+				}
+				.warning-box p {
+					color: #78350f;
+					font-size: 14px;
+					line-height: 1.5;
+				}
+				.api-key-container {
+					background: #1e293b;
+					border-radius: 8px;
+					padding: 20px;
+					margin-bottom: 20px;
+					position: relative;
+				}
+				.api-key-label {
+					color: #94a3b8;
+					font-size: 12px;
+					text-transform: uppercase;
+					letter-spacing: 0.5px;
+					margin-bottom: 12px;
+					text-align: left;
+				}
+				.api-key {
+					color: #60a5fa;
+					font-family: 'Courier New', monospace;
+					font-size: 16px;
+					word-break: break-all;
+					text-align: left;
+					padding: 12px;
+					background: #0f172a;
+					border-radius: 4px;
+					margin-bottom: 16px;
+				}
+				.copy-button {
+					background: #3b82f6;
+					color: white;
+					border: none;
+					border-radius: 6px;
+					padding: 12px 24px;
+					font-size: 14px;
+					font-weight: 600;
+					cursor: pointer;
+					width: 100%%;
+					transition: background 0.2s;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					gap: 8px;
+				}
+				.copy-button:hover {
+					background: #2563eb;
+				}
+				.copy-button:active {
+					background: #1d4ed8;
+				}
+				.copy-button.copied {
+					background: #10b981;
+				}
+				.info-section {
+					background: #f9fafb;
+					border-radius: 8px;
+					padding: 20px;
+					margin-top: 24px;
+					text-align: left;
+				}
+				.info-section h3 {
+					color: #1f2937;
+					font-size: 16px;
+					margin-bottom: 12px;
+				}
+				.info-section code {
+					background: #e5e7eb;
+					padding: 2px 6px;
+					border-radius: 4px;
+					font-size: 13px;
+					color: #1f2937;
+				}
+				.info-section pre {
+					background: #1e293b;
+					color: #60a5fa;
+					padding: 12px;
+					border-radius: 4px;
+					overflow-x: auto;
+					font-size: 12px;
+					margin-top: 8px;
+				}
+				.footer {
+					margin-top: 32px;
+					padding-top: 24px;
+					border-top: 1px solid #e5e7eb;
+					color: #6b7280;
+					font-size: 14px;
+				}
 			</style>
 		</head>
 		<body>
-			<div class="success">✓ Payment Successful!</div>
-			<p>Your API key has been sent to your email address.</p>
-			<p>Check your inbox for your API key and start using the Austrian Invoice API.</p>
+			<div class="container">
+				<div class="success-icon">✓</div>
+				<h1>Zahlung erfolgreich!</h1>
+				<p class="subtitle">Ihr API-Schlüssel wurde generiert</p>
+				
+				<div class="warning-box">
+					<strong>⚠️ WICHTIG</strong>
+					<p>Dies ist das einzige Mal, dass Ihr Key angezeigt wird. Bitte speichern Sie ihn sicher (z.B. in einem Passwort-Manager).</p>
+				</div>
+				
+				<div class="api-key-container">
+					<div class="api-key-label">Ihr API-Schlüssel</div>
+					<div class="api-key" id="apiKey">%s</div>
+					<button class="copy-button" onclick="copyApiKey()" id="copyBtn">
+						<span id="copyText">📋 In Zwischenablage kopieren</span>
+					</button>
+				</div>
+				
+				<div class="info-section">
+					<h3>So verwenden Sie Ihren API-Schlüssel:</h3>
+					<p>Fügen Sie den Header <code>X-API-KEY</code> zu allen API-Anfragen hinzu:</p>
+					<pre>curl -X POST https://api.at-invoice.at/generate \\
+  -H "X-API-KEY: %s" \\
+  -H "Content-Type: application/json" \\
+  -d '{...}'</pre>
+				</div>
+				
+				<div class="footer">
+					<p>Ihr API-Schlüssel wurde auch per E-Mail gesendet.</p>
+					<p><a href="/" style="color: #3b82f6; text-decoration: none;">← Zurück zur Startseite</a></p>
+				</div>
+			</div>
+			
+			<script>
+				function copyApiKey() {
+					const apiKey = document.getElementById('apiKey').textContent;
+					const copyBtn = document.getElementById('copyBtn');
+					const copyText = document.getElementById('copyText');
+					
+					navigator.clipboard.writeText(apiKey).then(function() {
+						copyBtn.classList.add('copied');
+						copyText.textContent = '✓ Kopiert!';
+						
+						setTimeout(function() {
+							copyBtn.classList.remove('copied');
+							copyText.textContent = '📋 In Zwischenablage kopieren';
+						}, 2000);
+					}).catch(function(err) {
+						alert('Fehler beim Kopieren: ' + err);
+					});
+				}
+			</script>
 		</body>
 		</html>
-	`)
+	`, apiKey, apiKey)
+	
+	fmt.Fprint(w, html)
 }
 
 // handleCancel handles cancelled checkout redirect
