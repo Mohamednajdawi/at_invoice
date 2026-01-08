@@ -91,12 +91,12 @@ func handleCheckoutCompleted(event stripe.Event) error {
 	if err := json.Unmarshal(event.Data.Raw, &sessionData); err != nil {
 		return fmt.Errorf("failed to extract session ID: %w", err)
 	}
-	
+
 	sessionID := sessionData.Object.ID
 	if sessionID == "" {
 		return fmt.Errorf("session ID not found in event")
 	}
-	
+
 	// Retrieve full session from Stripe API
 	sess, err := session.Get(sessionID, nil)
 	if err != nil {
@@ -107,13 +107,13 @@ func handleCheckoutCompleted(event stripe.Event) error {
 	// In Stripe CheckoutSession, Customer can be a string ID or Customer object
 	var customerID string
 	var customerEmail string
-	
+
 	// Get customer ID - in CheckoutSession, Customer is a pointer to Customer object
 	if sess.Customer != nil {
 		customerID = sess.Customer.ID
 		customerEmail = sess.Customer.Email
 	}
-	
+
 	// For guest checkouts, create a customer from email
 	if customerID == "" {
 		if sess.CustomerDetails != nil && sess.CustomerDetails.Email != "" {
@@ -145,7 +145,7 @@ func handleCheckoutCompleted(event stripe.Event) error {
 	updateParams := &stripe.CustomerParams{}
 	updateParams.AddMetadata("api_key", apiKey)
 	updateParams.AddMetadata("tier", "paid")
-	
+
 	_, err = customer.Update(customerID, updateParams)
 	if err != nil {
 		return fmt.Errorf("failed to update customer metadata: %w", err)
@@ -168,24 +168,24 @@ func handleCheckoutCompleted(event stripe.Event) error {
 func sendAPIKeyEmail(email, apiKey string) error {
 	sendGridAPIKey := os.Getenv("SENDGRID_API_KEY")
 	fromEmail := os.Getenv("FROM_EMAIL")
-	
+
 	// Fallback if FROM_EMAIL not set
 	if fromEmail == "" {
 		fromEmail = "noreply@at-invoice.at"
 	}
-	
+
 	// If SendGrid not configured, log and return (don't fail)
 	if sendGridAPIKey == "" {
 		log.Printf("SENDGRID_API_KEY not set - email not sent to %s", email)
 		log.Printf("API Key for %s: %s", email, apiKey)
 		return nil
 	}
-	
+
 	// Create email message
 	from := mail.NewEmail("AT-Invoice", fromEmail)
 	to := mail.NewEmail("", email)
 	subject := "Your Austrian Invoice API Key"
-	
+
 	// HTML email body
 	htmlContent := fmt.Sprintf(`
 		<!DOCTYPE html>
@@ -238,7 +238,7 @@ curl -X POST https://api.at-invoice.at/generate \\
 		</body>
 		</html>
 	`, apiKey, apiKey)
-	
+
 	// Plain text version
 	plainTextContent := fmt.Sprintf(`
 Thank you for subscribing to AT-Invoice!
@@ -260,16 +260,16 @@ View documentation: https://at-invoice.at
 
 If you didn't request this key, please contact support.
 	`, apiKey, apiKey)
-	
+
 	message := mail.NewSingleEmail(from, subject, to, plainTextContent, htmlContent)
-	
+
 	// Send email via SendGrid
 	client := sendgrid.NewSendClient(sendGridAPIKey)
 	response, err := client.Send(message)
 	if err != nil {
 		return fmt.Errorf("failed to send email via SendGrid: %w", err)
 	}
-	
+
 	// Log response for debugging
 	if response.StatusCode >= 200 && response.StatusCode < 300 {
 		log.Printf("API key email sent successfully to %s (Status: %d)", email, response.StatusCode)
@@ -277,7 +277,7 @@ If you didn't request this key, please contact support.
 		log.Printf("SendGrid returned non-2xx status: %d, Body: %s", response.StatusCode, response.Body)
 		return fmt.Errorf("SendGrid returned status %d", response.StatusCode)
 	}
-	
+
 	return nil
 }
 
@@ -336,7 +336,7 @@ func getSuccessURL(r *http.Request) string {
 	if host == "" {
 		host = "localhost:8080"
 	}
-	return fmt.Sprintf("%s://%s/success", scheme, host)
+	return fmt.Sprintf("%s://%s/success?session_id={CHECKOUT_SESSION_ID}", scheme, host)
 }
 
 // getCancelURL constructs the cancel URL for checkout
@@ -355,7 +355,7 @@ func getCancelURL(r *http.Request) string {
 // handleSuccess handles successful checkout redirect and displays the API key
 func handleSuccess(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	
+
 	// Get session_id from query parameter (Stripe adds this automatically)
 	sessionID := r.URL.Query().Get("session_id")
 	if sessionID == "" {
@@ -380,7 +380,7 @@ func handleSuccess(w http.ResponseWriter, r *http.Request) {
 		`)
 		return
 	}
-	
+
 	// Retrieve the checkout session from Stripe
 	sess, err := session.Get(sessionID, nil)
 	if err != nil {
@@ -388,7 +388,7 @@ func handleSuccess(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to retrieve session information", http.StatusInternalServerError)
 		return
 	}
-	
+
 	// Get customer ID from session
 	var customerID string
 	if sess.Customer != nil {
@@ -400,13 +400,13 @@ func handleSuccess(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Please check your email for your API key", http.StatusOK)
 		return
 	}
-	
+
 	if customerID == "" {
 		log.Printf("No customer ID found in session")
 		http.Error(w, "Unable to retrieve customer information", http.StatusInternalServerError)
 		return
 	}
-	
+
 	// Retrieve customer to get API key from metadata
 	cust, err := customer.Get(customerID, nil)
 	if err != nil {
@@ -414,36 +414,61 @@ func handleSuccess(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to retrieve customer information", http.StatusInternalServerError)
 		return
 	}
-	
+
 	// Get API key from customer metadata
 	apiKey := cust.Metadata["api_key"]
 	if apiKey == "" {
-		// API key might not be generated yet (webhook might be processing)
-		fmt.Fprintf(w, `
-			<!DOCTYPE html>
-			<html>
-			<head>
-				<title>Payment Successful</title>
-				<meta charset="UTF-8">
-				<style>
-					body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
-					.success { color: green; font-size: 24px; }
-					.info { color: #666; margin-top: 20px; }
-				</style>
-			</head>
-			<body>
-				<div class="success">✓ Payment Successful!</div>
-				<div class="info">
-					<p>Your API key is being generated...</p>
-					<p>It will be sent to your email address shortly.</p>
-					<p>Please check your inbox.</p>
-				</div>
-			</body>
-			</html>
-		`)
-		return
+		// API key not generated yet - generate it now (webhook might be delayed)
+		log.Printf("API key not found in metadata, generating now for customer: %s", customerID)
+
+		apiKey, err = generateAPIKey(false)
+		if err != nil {
+			log.Printf("Failed to generate API key: %v", err)
+			// Show fallback message
+			fmt.Fprintf(w, `
+				<!DOCTYPE html>
+				<html>
+				<head>
+					<title>Payment Successful</title>
+					<meta charset="UTF-8">
+					<style>
+						body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+						.success { color: green; font-size: 24px; }
+						.info { color: #666; margin-top: 20px; }
+					</style>
+				</head>
+				<body>
+					<div class="success">✓ Payment Successful!</div>
+					<div class="info">
+						<p>Your API key is being generated...</p>
+						<p>It will be sent to your email address shortly.</p>
+						<p>Please check your inbox.</p>
+					</div>
+				</body>
+				</html>
+			`)
+			return
+		}
+
+		// Update customer metadata with API key
+		updateParams := &stripe.CustomerParams{}
+		updateParams.AddMetadata("api_key", apiKey)
+		updateParams.AddMetadata("tier", "paid")
+
+		_, err = customer.Update(customerID, updateParams)
+		if err != nil {
+			log.Printf("Failed to update customer metadata: %v", err)
+			// Continue anyway - we have the key
+		}
+
+		// Send email with API key
+		if cust.Email != "" {
+			if err := sendAPIKeyEmail(cust.Email, apiKey); err != nil {
+				log.Printf("Failed to send API key email: %v", err)
+			}
+		}
 	}
-	
+
 	// Display the success page with API key
 	html := fmt.Sprintf(`
 		<!DOCTYPE html>
@@ -599,6 +624,19 @@ func handleSuccess(w http.ResponseWriter, r *http.Request) {
 					color: #6b7280;
 					font-size: 14px;
 				}
+				.back-button {
+					display: inline-block;
+					background: #dc2626;
+					color: white;
+					padding: 12px 32px;
+					border-radius: 8px;
+					text-decoration: none;
+					font-weight: 600;
+					transition: background 0.2s;
+				}
+				.back-button:hover {
+					background: #b91c1c;
+				}
 			</style>
 		</head>
 		<body>
@@ -630,8 +668,10 @@ func handleSuccess(w http.ResponseWriter, r *http.Request) {
 				</div>
 				
 				<div class="footer">
-					<p>Ihr API-Schlüssel wurde auch per E-Mail gesendet.</p>
-					<p><a href="/" style="color: #3b82f6; text-decoration: none;">← Zurück zur Startseite</a></p>
+					<p style="margin-bottom: 20px;">Ihr API-Schlüssel wurde auch per E-Mail gesendet.</p>
+					<a href="/" class="back-button">
+						← Zurück zur Startseite
+					</a>
 				</div>
 			</div>
 			
@@ -657,7 +697,7 @@ func handleSuccess(w http.ResponseWriter, r *http.Request) {
 		</body>
 		</html>
 	`, apiKey, apiKey)
-	
+
 	fmt.Fprint(w, html)
 }
 
@@ -681,4 +721,3 @@ func handleCancel(w http.ResponseWriter, r *http.Request) {
 		</html>
 	`)
 }
-

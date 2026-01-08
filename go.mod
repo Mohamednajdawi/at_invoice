@@ -7,4 +7,7 @@ require (
 	github.com/stripe/stripe-go/v76 v76.25.0
 )
 
-require github.com/sendgrid/rest v2.6.9+incompatible // indirect
+require (
+	github.com/joho/godotenv v1.5.1 // indirect
+	github.com/sendgrid/rest v2.6.9+incompatible // indirect
+)
