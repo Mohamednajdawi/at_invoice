@@ -3,7 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AT-Invoice API | ebInterface 6.1 Compliance as a Service</title>
+    
+    <!-- Primary Meta Tags -->
+    <title>AT-Invoice API | ebInterface 6.1 XML Generator für Österreich</title>
+    <meta name="title" content="AT-Invoice API | ebInterface 6.1 XML Generator für Österreich">
+    <meta name="description" content="REST API für ebInterface 6.1 konforme E-Rechnungen in Österreich. JSON zu XML Konvertierung, kompatibel mit e-rechnung.gv.at. Einfache Integration, automatische Validierung.">
+    <meta name="keywords" content="ebInterface, ebInterface 6.1, E-Rechnung Österreich, XML Rechnung, Austrian Invoice, e-rechnung.gv.at, REST API, JSON to XML, Rechnungsgenerierung, elektronische Rechnung Austria">
+    <meta name="author" content="AT-Invoice">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://web-production-b0d1d.up.railway.app/">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://web-production-b0d1d.up.railway.app/">
+    <meta property="og:title" content="AT-Invoice API | ebInterface 6.1 XML Generator für Österreich">
+    <meta property="og:description" content="REST API für ebInterface 6.1 konforme E-Rechnungen. JSON zu XML Konvertierung, kompatibel mit e-rechnung.gv.at.">
+    <meta property="og:locale" content="de_AT">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://web-production-b0d1d.up.railway.app/">
+    <meta property="twitter:title" content="AT-Invoice API | ebInterface 6.1 XML Generator">
+    <meta property="twitter:description" content="REST API für ebInterface 6.1 konforme E-Rechnungen in Österreich.">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -41,6 +63,39 @@
             border: 1px solid rgba(255, 255, 255, 0.18);
         }
     </style>
+    
+    <!-- JSON-LD Structured Data for Google -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "AT-Invoice API",
+      "description": "REST API für ebInterface 6.1 konforme E-Rechnungen in Österreich. JSON zu XML Konvertierung, kompatibel mit e-rechnung.gv.at.",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "29",
+        "priceCurrency": "EUR",
+        "priceValidUntil": "2026-12-31"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5",
+        "ratingCount": "1"
+      },
+      "provider": {
+        "@type": "Organization",
+        "name": "AT-Invoice",
+        "url": "https://web-production-b0d1d.up.railway.app/",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "email": "najdawimohamed@gmail.com",
+          "contactType": "Customer Support"
+        }
+      }
+    }
+    </script>
 </head>
 <body class="bg-white text-slate-900 antialiased">
 
@@ -385,11 +440,9 @@
                 </div>
                 
                 <div>
-                    <h4 class="font-semibold text-white mb-4">Rechtliches</h4>
+                    <h4 class="font-semibold text-white mb-4">Account</h4>
                     <ul class="space-y-3 text-sm">
-                        <li><a href="#" class="hover:text-white transition">Impressum</a></li>
-                        <li><a href="#" class="hover:text-white transition">Datenschutz</a></li>
-                        <li><a href="#" class="hover:text-white transition">AGB</a></li>
+                        <li><button onclick="openManageSubscription()" class="hover:text-white transition text-left">Abo verwalten</button></li>
                     </ul>
                 </div>
             </div>
@@ -399,6 +452,46 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        function copyCurlCommand() {
+            const code = document.getElementById('codeExample').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = document.getElementById('copyBtn');
+                const text = document.getElementById('copyText');
+                text.textContent = 'Kopiert!';
+                setTimeout(() => {
+                    text.textContent = 'Kopieren';
+                }, 2000);
+            });
+        }
+
+        async function openManageSubscription() {
+            const apiKey = prompt('Bitte geben Sie Ihren API-Key ein:');
+            if (!apiKey) return;
+
+            try {
+                const response = await fetch('/manage-subscription', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ api_key: apiKey })
+                });
+
+                if (!response.ok) {
+                    alert('Ungültiger API-Key oder Fehler beim Laden des Portals.');
+                    return;
+                }
+
+                const data = await response.json();
+                window.location.href = data.url;
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Fehler beim Öffnen des Abonnement-Portals.');
+            }
+        }
+    </script>
 
     <script src="/script.js"></script>
 

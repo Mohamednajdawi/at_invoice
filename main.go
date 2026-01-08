@@ -46,6 +46,11 @@ func main() {
 			http.ServeFile(w, r, "static/api-key.svg")
 		} else if r.URL.Path == "/web-generator.svg" {
 			http.ServeFile(w, r, "static/web-generator.svg")
+		} else if r.URL.Path == "/robots.txt" {
+			http.ServeFile(w, r, "static/robots.txt")
+		} else if r.URL.Path == "/sitemap.xml" {
+			w.Header().Set("Content-Type", "application/xml")
+			http.ServeFile(w, r, "static/sitemap.xml")
 		} else {
 			http.NotFound(w, r)
 		}
@@ -57,6 +62,7 @@ func main() {
 	mux.HandleFunc("/cancel", handleCancel)
 	mux.HandleFunc("/webhook", handleWebhook)
 	mux.HandleFunc("/api-keys/free", handleFreeTierSignup)
+	mux.HandleFunc("/manage-subscription", handleManageSubscription)
 
 	// Protected endpoints (require Stripe API key + rate limiting)
 	mux.Handle("/generate", RateLimitMiddleware(StripeAuthMiddleware(http.HandlerFunc(generateHandler))))

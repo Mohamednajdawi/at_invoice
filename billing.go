@@ -10,6 +10,7 @@ import (
 	"github.com/sendgrid/sendgrid-go"
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
 	"github.com/stripe/stripe-go/v76"
+	portalsession "github.com/stripe/stripe-go/v76/billingportal/session"
 	"github.com/stripe/stripe-go/v76/checkout/session"
 	"github.com/stripe/stripe-go/v76/customer"
 	"github.com/stripe/stripe-go/v76/webhook"
@@ -720,4 +721,62 @@ func handleCancel(w http.ResponseWriter, r *http.Request) {
 		</body>
 		</html>
 	`)
+}
+
+// handleManageSubscription creates a Stripe Customer Portal session
+func handleManageSubscription(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// Get API key from request body
+	var req struct {
+		APIKey string `json:"api_key"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	if req.APIKey == "" {
+		http.Error(w, "API key required", http.StatusBadRequest)
+		return
+	}
+
+	// Find customer by API key
+	ctx := r.Context()
+	cust, err := findCustomerByAPIKey(ctx, req.APIKey)
+	if err != nil || cust == nil {
+		http.Error(w, "Invalid API key", http.StatusUnauthorized)
+		return
+	}
+
+	// Create billing portal session
+	params := &stripe.BillingPortalSessionParams{
+		Customer:  stripe.String(cust.ID),
+		ReturnURL: stripe.String(os.Getenv("BASE_URL") + "/"),
+	}
+
+	if params.ReturnURL == nil || *params.ReturnURL == "/" {
+		// Fallback if BASE_URL not set
+		scheme := "https"
+		if r.TLS == nil {
+			scheme = "http"
+		}
+		params.ReturnURL = stripe.String(scheme + "://" + r.Host + "/")
+	}
+
+	portalSession, err := portalsession.New(params)
+	if err != nil {
+		log.Printf("Error creating billing portal session: %v", err)
+		http.Error(w, "Failed to create portal session", http.StatusInternalServerError)
+		return
+	}
+
+	// Return the portal URL
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]string{
+		"url": portalSession.URL,
+	})
 }
