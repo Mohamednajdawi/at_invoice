@@ -233,14 +233,14 @@ func decodeJSON(r io.Reader, v any) error {
 
 // Validation helper functions
 var (
-	vatIDRegex = regexp.MustCompile(`^ATU\d{9}$`)
+	vatIDRegex = regexp.MustCompile(`^ATU\d{8}$`)
 	bicRegex   = regexp.MustCompile(`^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$`)
 	ibanRegex  = regexp.MustCompile(`^AT\d{2}\d{16}$`)
 )
 
 func validateVATID(vatID string) error {
 	if !vatIDRegex.MatchString(vatID) {
-		return fmt.Errorf("vat_id must be in format ATU followed by 9 digits (e.g., ATU13585627)")
+		return fmt.Errorf("vat_id must be in format ATU followed by 8 digits (e.g., ATU13585627)")
 	}
 	return nil
 }

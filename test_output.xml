@@ -1,0 +1,1 @@
+{"error":{"code":"VALIDATION_ERROR","message":"Validation failed","details":"biller.vat_id: vat_id must be in format ATU followed by 9 digits (e.g., ATU13585627)"}}
