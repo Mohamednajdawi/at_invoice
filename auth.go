@@ -110,9 +110,8 @@ func findCustomerByAPIKey(ctx context.Context, apiKey string) (*stripe.Customer,
 	// Use Stripe Search API to find customer by metadata
 	// Note: Search API requires metadata to be indexed
 	searchQuery := fmt.Sprintf("metadata['api_key']:'%s'", apiKey)
-	params := &stripe.CustomerSearchParams{
-		Query: stripe.String(searchQuery),
-	}
+	params := &stripe.CustomerSearchParams{}
+	params.Query = searchQuery
 	params.Context = ctx
 
 	iter := customer.Search(params)
