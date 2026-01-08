@@ -3,7 +3,7 @@
     "invoice_date": "2026-01-08",
     "biller": {
         "name": "Freelance Developer",
-        "vat_id": "ATU61974703",
+        "vat_id": "ATU13585627",
         "biller_id": "FD-2026",
         "email": "dev@freelancer.at",
         "address": {
@@ -14,7 +14,7 @@
     },
     "recipient": {
         "name": "Startup Innovation Hub GmbH",
-        "vat_id": "ATU61976809",
+        "vat_id": "ATU38516405",
         "order_id": "1234567890",
         "address": {
             "street": "Spittelauer Lände 12",

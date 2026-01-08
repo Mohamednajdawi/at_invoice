@@ -3,7 +3,7 @@
     "invoice_date": "2026-01-08",
     "biller": {
         "name": "Tech Solutions Wien GmbH",
-        "vat_id": "ATU66889564",
+        "vat_id": "ATU13585627",
         "biller_id": "987654",
         "email": "invoices@techsolutions.at",
         "contact_name": "Maria Schmidt",
@@ -15,8 +15,8 @@
     },
     "recipient": {
         "name": "Österreichische Post AG",
-        "vat_id": "ATU55381503",
-        "order_id": "PO-2026-001",
+        "vat_id": "ATU38516405",
+        "order_id": "2026001234",
         "email": "procurement@post.at",
         "contact_name": "Hans Müller",
         "address": {

@@ -3,7 +3,7 @@
     "invoice_date": "2026-01-05",
     "biller": {
         "name": "Consulting Partners Austria GmbH",
-        "vat_id": "ATU61974703",
+        "vat_id": "ATU13585627",
         "biller_id": "CP-001",
         "email": "billing@consulting-partners.at",
         "contact_name": "Dr. Thomas Wagner",
@@ -15,8 +15,8 @@
     },
     "recipient": {
         "name": "Wiener Stadtwerke GmbH",
-        "vat_id": "ATU41852608",
-        "order_id": "WSW-2025-8765",
+        "vat_id": "ATU38516405",
+        "order_id": "8765432100",
         "email": "einkauf@wstw.at",
         "address": {
             "street": "Thomas-Klestil-Platz 14",
