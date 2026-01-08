@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Invoice xmlns="http://www.ebinterface.at/schema/6p1/" GeneratingSystem="austrian-invoice-microservice" DocumentType="Invoice" InvoiceCurrency="EUR" Language="de">
+  <InvoiceNumber>RE-2026-042</InvoiceNumber>
+  <InvoiceDate>2026-01-08</InvoiceDate>
+  <Delivery>
+    <Date>2026-01-08</Date>
+    <Address>
+      <Name>Tech Solutions Wien GmbH</Name>
+      <Street>Mariahilfer Straße 123</Street>
+      <Town>Wien</Town>
+      <ZIP>1070</ZIP>
+      <Country CountryCode="AT">Österreich</Country>
+    </Address>
+    <Contact>
+      <Name>Maria Schmidt</Name>
+      <Email>invoices@techsolutions.at</Email>
+    </Contact>
+  </Delivery>
+  <Biller>
+    <VATIdentificationNumber>ATU67891234</VATIdentificationNumber>
+    <Address>
+      <Name>Tech Solutions Wien GmbH</Name>
+      <Street>Mariahilfer Straße 123</Street>
+      <Town>Wien</Town>
+      <ZIP>1070</ZIP>
+      <Country CountryCode="AT">Österreich</Country>
+    </Address>
+    <Contact>
+      <Name>Maria Schmidt</Name>
+      <Email>invoices@techsolutions.at</Email>
+    </Contact>
+    <InvoiceRecipientsBillerID>987654</InvoiceRecipientsBillerID>
+  </Biller>
+  <InvoiceRecipient>
+    <VATIdentificationNumber>ATU55381503</VATIdentificationNumber>
+    <OrderReference>
+      <OrderID>PO-2026-001</OrderID>
+    </OrderReference>
+    <Address>
+      <Name>Österreichische Post AG</Name>
+      <Street>Rochusplatz 1</Street>
+      <Town>Wien</Town>
+      <ZIP>1030</ZIP>
+      <Country CountryCode="AT">Österreich</Country>
+    </Address>
+    <Contact>
+      <Name>Hans Müller</Name>
+      <Email>procurement@post.at</Email>
+    </Contact>
+  </InvoiceRecipient>
+  <Details>
+    <ItemList>
+      <ListLineItem>
+        <Description>Webdesign und Development</Description>
+        <Quantity Unit="C62">40</Quantity>
+        <UnitPrice>150.00</UnitPrice>
+        <InvoiceRecipientsOrderReference>
+          <OrderID>PO-2026-001</OrderID>
+          <OrderPositionNumber>1</OrderPositionNumber>
+        </InvoiceRecipientsOrderReference>
+        <TaxItem>
+          <TaxableAmount>6000.00</TaxableAmount>
+          <TaxPercent TaxCategoryCode="S">20</TaxPercent>
+        </TaxItem>
+        <LineItemAmount>6000.00</LineItemAmount>
+      </ListLineItem>
+      <ListLineItem>
+        <Description>SEO Optimierung - monatliche Betreuung</Description>
+        <Quantity Unit="C62">3</Quantity>
+        <UnitPrice>800.00</UnitPrice>
+        <InvoiceRecipientsOrderReference>
+          <OrderID>PO-2026-001</OrderID>
+          <OrderPositionNumber>2</OrderPositionNumber>
+        </InvoiceRecipientsOrderReference>
+        <TaxItem>
+          <TaxableAmount>2400.00</TaxableAmount>
+          <TaxPercent TaxCategoryCode="S">20</TaxPercent>
+        </TaxItem>
+        <LineItemAmount>2400.00</LineItemAmount>
+      </ListLineItem>
+      <ListLineItem>
+        <Description>Hosting Gebühren (Jahrespaket)</Description>
+        <Quantity Unit="C62">1</Quantity>
+        <UnitPrice>1200.00</UnitPrice>
+        <InvoiceRecipientsOrderReference>
+          <OrderID>PO-2026-001</OrderID>
+          <OrderPositionNumber>3</OrderPositionNumber>
+        </InvoiceRecipientsOrderReference>
+        <TaxItem>
+          <TaxableAmount>1200.00</TaxableAmount>
+          <TaxPercent TaxCategoryCode="S">20</TaxPercent>
+        </TaxItem>
+        <LineItemAmount>1200.00</LineItemAmount>
+      </ListLineItem>
+    </ItemList>
+  </Details>
+  <Tax>
+    <TaxItem>
+      <TaxableAmount>9600.00</TaxableAmount>
+      <TaxPercent TaxCategoryCode="S">20</TaxPercent>
+      <TaxAmount>1920.00</TaxAmount>
+    </TaxItem>
+  </Tax>
+  <TotalGrossAmount>11520.00</TotalGrossAmount>
+  <PayableAmount>11520.00</PayableAmount>
+  <PaymentMethod>
+    <UniversalBankTransaction>
+      <BeneficiaryAccount>
+        <BIC>BKAUATWW</BIC>
+        <IBAN>AT611904300234573201</IBAN>
+        <BankAccountOwner>Tech Solutions Wien GmbH</BankAccountOwner>
+      </BeneficiaryAccount>
+    </UniversalBankTransaction>
+  </PaymentMethod>
+</Invoice>

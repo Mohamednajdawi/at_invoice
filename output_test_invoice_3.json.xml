@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Invoice xmlns="http://www.ebinterface.at/schema/6p1/" GeneratingSystem="austrian-invoice-microservice" DocumentType="Invoice" InvoiceCurrency="EUR" Language="de">
+  <InvoiceNumber>INV-2026-999</InvoiceNumber>
+  <InvoiceDate>2026-01-05</InvoiceDate>
+  <Delivery>
+    <Date>2026-01-05</Date>
+    <Address>
+      <Name>Consulting Partners Austria GmbH</Name>
+      <Street>Kärntner Ring 5-7</Street>
+      <Town>Wien</Town>
+      <ZIP>1010</ZIP>
+      <Country CountryCode="AT">Österreich</Country>
+    </Address>
+    <Contact>
+      <Name>Dr. Thomas Wagner</Name>
+      <Email>billing@consulting-partners.at</Email>
+    </Contact>
+  </Delivery>
+  <Biller>
+    <VATIdentificationNumber>ATU12345678</VATIdentificationNumber>
+    <Address>
+      <Name>Consulting Partners Austria GmbH</Name>
+      <Street>Kärntner Ring 5-7</Street>
+      <Town>Wien</Town>
+      <ZIP>1010</ZIP>
+      <Country CountryCode="AT">Österreich</Country>
+    </Address>
+    <Contact>
+      <Name>Dr. Thomas Wagner</Name>
+      <Email>billing@consulting-partners.at</Email>
+    </Contact>
+    <InvoiceRecipientsBillerID>CP-001</InvoiceRecipientsBillerID>
+  </Biller>
+  <InvoiceRecipient>
+    <VATIdentificationNumber>ATU41852608</VATIdentificationNumber>
+    <OrderReference>
+      <OrderID>WSW-2025-8765</OrderID>
+    </OrderReference>
+    <Address>
+      <Name>Wiener Stadtwerke GmbH</Name>
+      <Street>Thomas-Klestil-Platz 14</Street>
+      <Town>Wien</Town>
+      <ZIP>1030</ZIP>
+      <Country CountryCode="AT">Österreich</Country>
+    </Address>
+    <Contact>
+      <Name>Accounting</Name>
+      <Email>einkauf@wstw.at</Email>
+    </Contact>
+  </InvoiceRecipient>
+  <Details>
+    <ItemList>
+      <ListLineItem>
+        <Description>IT-Beratung Senior Consultant</Description>
+        <Quantity Unit="C62">160</Quantity>
+        <UnitPrice>185.00</UnitPrice>
+        <InvoiceRecipientsOrderReference>
+          <OrderID>WSW-2025-8765</OrderID>
+          <OrderPositionNumber>1</OrderPositionNumber>
+        </InvoiceRecipientsOrderReference>
+        <TaxItem>
+          <TaxableAmount>29600.00</TaxableAmount>
+          <TaxPercent TaxCategoryCode="S">20</TaxPercent>
+        </TaxItem>
+        <LineItemAmount>29600.00</LineItemAmount>
+      </ListLineItem>
+      <ListLineItem>
+        <Description>Projektmanagement</Description>
+        <Quantity Unit="C62">80</Quantity>
+        <UnitPrice>210.00</UnitPrice>
+        <InvoiceRecipientsOrderReference>
+          <OrderID>WSW-2025-8765</OrderID>
+          <OrderPositionNumber>2</OrderPositionNumber>
+        </InvoiceRecipientsOrderReference>
+        <TaxItem>
+          <TaxableAmount>16800.00</TaxableAmount>
+          <TaxPercent TaxCategoryCode="S">20</TaxPercent>
+        </TaxItem>
+        <LineItemAmount>16800.00</LineItemAmount>
+      </ListLineItem>
+    </ItemList>
+  </Details>
+  <Tax>
+    <TaxItem>
+      <TaxableAmount>46400.00</TaxableAmount>
+      <TaxPercent TaxCategoryCode="S">20</TaxPercent>
+      <TaxAmount>9280.00</TaxAmount>
+    </TaxItem>
+  </Tax>
+  <TotalGrossAmount>55680.00</TotalGrossAmount>
+  <PayableAmount>55680.00</PayableAmount>
+  <PaymentMethod>
+    <UniversalBankTransaction>
+      <BeneficiaryAccount>
+        <BIC>BKAUATWW</BIC>
+        <IBAN>AT021200000012345678</IBAN>
+        <BankAccountOwner>Consulting Partners Austria GmbH</BankAccountOwner>
+      </BeneficiaryAccount>
+    </UniversalBankTransaction>
+  </PaymentMethod>
+</Invoice>

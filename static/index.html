@@ -68,42 +68,41 @@
 
     <header class="max-w-7xl mx-auto px-6 lg:px-8 pt-32 pb-20 lg:pt-40 lg:pb-28">
         <div class="text-center max-w-4xl mx-auto">
-            <div class="inline-flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 px-4 py-2 rounded-full text-sm font-semibold mb-8">
-                <span class="w-2 h-2 bg-red-600 rounded-full animate-pulse"></span>
-                ebInterface 6.1 Zertifiziert
+            <div class="inline-flex items-center gap-2 bg-slate-100 border border-slate-300 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium mb-8">
+                ebInterface 6.1 API
             </div>
             
-            <h1 class="text-5xl lg:text-7xl font-black leading-tight tracking-tight">
-                E-Rechnungen für<br/>
-                <span class="gradient-text">österreichische Unternehmen</span>
+            <h1 class="text-4xl lg:text-6xl font-bold leading-tight tracking-tight text-slate-900">
+                ebInterface XML Rechnungen<br/>
+                per REST API generieren
             </h1>
             
-            <p class="text-xl lg:text-2xl text-slate-600 mt-8 leading-relaxed font-light max-w-3xl mx-auto">
-                Professionelle API zur Generierung gesetzeskonformer ebInterface 6.1 Rechnungen. Validiert vom Bundesrechenzentrum, optimiert für Enterprise-Anforderungen.
+            <p class="text-lg lg:text-xl text-slate-600 mt-6 leading-relaxed max-w-2xl mx-auto">
+                Senden Sie JSON, erhalten Sie gültiges ebInterface 6.1 XML. 
+                Kompatibel mit e-rechnung.gv.at.
             </p>
             
-            <div class="mt-12 flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <a href="/buy" class="bg-red-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-red-700 transition shadow-lg hover:shadow-xl">
-                    API-Key erstellen
-                    <i class="fa-solid fa-arrow-right ml-2"></i>
+            <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="/generator" class="bg-slate-900 text-white px-8 py-3 rounded-lg font-semibold hover:bg-slate-800 transition">
+                    Generator testen
                 </a>
-                <a href="#docs" class="bg-white text-slate-700 border-2 border-slate-200 px-8 py-4 rounded-lg font-semibold text-lg hover:border-slate-300 transition">
-                    Dokumentation ansehen
+                <a href="/buy" class="bg-white text-slate-900 border-2 border-slate-300 px-8 py-3 rounded-lg font-semibold hover:border-slate-400 transition">
+                    API-Key kaufen
                 </a>
             </div>
             
-            <div class="mt-12 flex flex-wrap justify-center items-center gap-8 text-sm text-slate-500">
+            <div class="mt-10 flex flex-wrap justify-center items-center gap-6 text-sm text-slate-600">
                 <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-shield-halved text-green-600"></i>
-                    <span>DSGVO-konform</span>
+                    <i class="fa-solid fa-check text-slate-400"></i>
+                    <span>REST API</span>
                 </div>
                 <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-server text-blue-600"></i>
-                    <span>Server in Wien</span>
+                    <i class="fa-solid fa-check text-slate-400"></i>
+                    <span>JSON → XML</span>
                 </div>
                 <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-clock text-purple-600"></i>
-                    <span>99,9% Uptime SLA</span>
+                    <i class="fa-solid fa-check text-slate-400"></i>
+                    <span>ebInterface 6.1</span>
                 </div>
             </div>
         </div>
@@ -176,109 +175,93 @@
         </div>
     </section>
 
-    <section id="features" class="py-24 lg:py-32">
+    <section id="features" class="py-20 lg:py-24">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-20">
-                <h2 class="text-4xl lg:text-5xl font-bold tracking-tight mb-6">Enterprise-Grade Infrastruktur</h2>
-                <p class="text-xl text-slate-600">Entwickelt für kritische Geschäftsprozesse mit höchsten Anforderungen an Zuverlässigkeit und Compliance.</p>
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold tracking-tight mb-4">Was Sie bekommen</h2>
+                <p class="text-lg text-slate-600">Einfache REST API für ebInterface XML Generierung</p>
             </div>
             
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="bg-white p-8 rounded-2xl border border-slate-200 hover-lift hover:shadow-xl">
-                    <div class="w-14 h-14 bg-red-50 text-red-600 rounded-xl flex items-center justify-center mb-6">
-                        <i class="fa-solid fa-certificate text-2xl"></i>
+                <div class="bg-white p-6 rounded-xl border border-slate-200">
+                    <div class="w-12 h-12 bg-slate-100 text-slate-700 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fa-solid fa-file-code text-xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3">BRZ-Zertifiziert</h3>
-                    <p class="text-slate-600 leading-relaxed">Garantierte Konformität mit ebInterface 6.1 Standard. Alle generierten XMLs werden vom Bundesrechenzentrum (e-rechnung.gv.at) akzeptiert.</p>
+                    <h3 class="text-lg font-semibold mb-2">JSON to XML</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">Senden Sie strukturierte JSON-Daten, erhalten Sie ebInterface 6.1 konformes XML zurück.</p>
                 </div>
                 
-                <div class="bg-white p-8 rounded-2xl border border-slate-200 hover-lift hover:shadow-xl">
-                    <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-6">
-                        <i class="fa-solid fa-lock text-2xl"></i>
+                <div class="bg-white p-6 rounded-xl border border-slate-200">
+                    <div class="w-12 h-12 bg-slate-100 text-slate-700 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fa-solid fa-check-circle text-xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3">Zero Data Retention</h3>
-                    <p class="text-slate-600 leading-relaxed">Keine Speicherung von Rechnungsdaten. Verarbeitung erfolgt ausschließlich im Arbeitsspeicher und wird nach Response sofort gelöscht.</p>
+                    <h3 class="text-lg font-semibold mb-2">Validierung</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">Automatische Validierung aller Pflichtfelder und Formate (VAT-ID, IBAN, BIC).</p>
                 </div>
                 
-                <div class="bg-white p-8 rounded-2xl border border-slate-200 hover-lift hover:shadow-xl">
-                    <div class="w-14 h-14 bg-green-50 text-green-600 rounded-xl flex items-center justify-center mb-6">
-                        <i class="fa-solid fa-gauge-high text-2xl"></i>
+                <div class="bg-white p-6 rounded-xl border border-slate-200">
+                    <div class="w-12 h-12 bg-slate-100 text-slate-700 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fa-solid fa-gauge text-xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3">High Performance</h3>
-                    <p class="text-slate-600 leading-relaxed">Durchschnittliche Response-Zeit unter 100ms. Go-basierte Architektur mit horizontaler Skalierbarkeit für Hochlastszenarien.</p>
+                    <h3 class="text-lg font-semibold mb-2">Schnell</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">Response-Zeit unter 200ms. Go-Backend auf Railway gehostet.</p>
                 </div>
                 
-                <div class="bg-white p-8 rounded-2xl border border-slate-200 hover-lift hover:shadow-xl">
-                    <div class="w-14 h-14 bg-purple-50 text-purple-600 rounded-xl flex items-center justify-center mb-6">
-                        <i class="fa-solid fa-code text-2xl"></i>
+                <div class="bg-white p-6 rounded-xl border border-slate-200">
+                    <div class="w-12 h-12 bg-slate-100 text-slate-700 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fa-solid fa-lock text-xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3">RESTful API</h3>
-                    <p class="text-slate-600 leading-relaxed">Moderne REST-Schnittstelle mit vollständiger OpenAPI 3.0 Spezifikation. SDKs für gängige Programmiersprachen verfügbar.</p>
+                    <h3 class="text-lg font-semibold mb-2">Keine Speicherung</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">Ihre Rechnungsdaten werden nicht gespeichert. Verarbeitung nur im RAM.</p>
                 </div>
                 
-                <div class="bg-white p-8 rounded-2xl border border-slate-200 hover-lift hover:shadow-xl">
-                    <div class="w-14 h-14 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center mb-6">
-                        <i class="fa-solid fa-webhook text-2xl"></i>
+                <div class="bg-white p-6 rounded-xl border border-slate-200">
+                    <div class="w-12 h-12 bg-slate-100 text-slate-700 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fa-solid fa-key text-xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3">Webhooks & Events</h3>
-                    <p class="text-slate-600 leading-relaxed">Echtzeit-Benachrichtigungen über Generierungsstatus, Fehler und Systemevents. Vollständige Event-Logs für Audit-Zwecke.</p>
+                    <h3 class="text-lg font-semibold mb-2">API-Key Auth</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">Einfache Authentifizierung per X-API-KEY Header. Verwaltung über Stripe.</p>
                 </div>
                 
-                <div class="bg-white p-8 rounded-2xl border border-slate-200 hover-lift hover:shadow-xl">
-                    <div class="w-14 h-14 bg-teal-50 text-teal-600 rounded-xl flex items-center justify-center mb-6">
-                        <i class="fa-solid fa-headset text-2xl"></i>
+                <div class="bg-white p-6 rounded-xl border border-slate-200">
+                    <div class="w-12 h-12 bg-slate-100 text-slate-700 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fa-solid fa-browser text-xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3">Expert Support</h3>
-                    <p class="text-slate-600 leading-relaxed">Technischer Support durch österreichische Entwickler mit ebInterface-Expertise. SLA-basierte Reaktionszeiten für Business-Kunden.</p>
+                    <h3 class="text-lg font-semibold mb-2">Web Generator</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">Drag & Drop Interface für manuelle Uploads ohne Code.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="integration" class="bg-slate-50 py-24 lg:py-32">
+    <section id="integration" class="bg-slate-50 py-20 lg:py-24">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl lg:text-5xl font-bold tracking-tight mb-6">Nahtlose Integration</h2>
-                <p class="text-xl text-slate-600">In wenigen Minuten produktionsbereit in Ihrem System</p>
+            <div class="text-center mb-12">
+                <h2 class="text-3xl lg:text-4xl font-bold tracking-tight mb-4">So funktioniert's</h2>
+                <p class="text-lg text-slate-600">3 Schritte zur ebInterface Rechnung</p>
             </div>
             
-            <div class="grid lg:grid-cols-2 gap-12 items-center">
-                <div class="space-y-8">
-                    <div class="flex gap-6">
-                        <div class="flex-shrink-0">
-                            <div class="w-12 h-12 bg-red-100 text-red-600 rounded-lg flex items-center justify-center font-bold">1</div>
-                        </div>
-                        <div>
-                            <h3 class="text-xl font-bold mb-2">API-Key erhalten</h3>
-                            <p class="text-slate-600">Registrieren Sie sich und erhalten Sie sofort Ihren API-Schlüssel. Keine manuelle Freischaltung erforderlich.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="flex gap-6">
-                        <div class="flex-shrink-0">
-                            <div class="w-12 h-12 bg-red-100 text-red-600 rounded-lg flex items-center justify-center font-bold">2</div>
-                        </div>
-                        <div>
-                            <h3 class="text-xl font-bold mb-2">JSON-Payload erstellen</h3>
-                            <p class="text-slate-600">Strukturieren Sie Ihre Rechnungsdaten als einfaches JSON-Objekt gemäß unserer Schema-Dokumentation.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="flex gap-6">
-                        <div class="flex-shrink-0">
-                            <div class="w-12 h-12 bg-red-100 text-red-600 rounded-lg flex items-center justify-center font-bold">3</div>
-                        </div>
-                        <div>
-                            <h3 class="text-xl font-bold mb-2">XML erhalten</h3>
-                            <p class="text-slate-600">Die API liefert valides ebInterface 6.1 XML zurück, bereit für den Upload zu e-rechnung.gv.at oder anderen Systemen.</p>
-                        </div>
-                    </div>
+            <div class="grid lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <div class="bg-white p-6 rounded-xl border border-slate-200">
+                    <div class="w-10 h-10 bg-slate-900 text-white rounded-lg flex items-center justify-center font-bold mb-4">1</div>
+                    <h3 class="text-lg font-semibold mb-2">API-Key kaufen</h3>
+                    <p class="text-slate-600 text-sm">Zahlung per Stripe. API-Key wird sofort per E-Mail zugeschickt.</p>
                 </div>
                 
-                <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-lg">
-                    <h4 class="font-bold text-lg mb-4 text-slate-700">Unterstützte Plattformen</h4>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="p-4 bg-slate-50 rounded-lg text-center">
+                <div class="bg-white p-6 rounded-xl border border-slate-200">
+                    <div class="w-10 h-10 bg-slate-900 text-white rounded-lg flex items-center justify-center font-bold mb-4">2</div>
+                    <h3 class="text-lg font-semibold mb-2">JSON senden</h3>
+                    <p class="text-slate-600 text-sm">POST Request an /generate mit Rechnungsdaten als JSON Body.</p>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl border border-slate-200">
+                    <div class="w-10 h-10 bg-slate-900 text-white rounded-lg flex items-center justify-center font-bold mb-4">3</div>
+                    <h3 class="text-lg font-semibold mb-2">XML erhalten</h3>
+                    <p class="text-slate-600 text-sm">Response enthält ebInterface 6.1 XML, ready für e-rechnung.gv.at.</p>
+                </div>
+            </div>
+        </div>
+    </section>                        <div class="p-4 bg-slate-50 rounded-lg text-center">
                             <i class="fa-solid fa-cart-shopping text-2xl text-slate-600 mb-2"></i>
                             <p class="text-sm font-semibold">E-Commerce</p>
                         </div>
@@ -309,142 +292,61 @@
         </div>
     </section>
 
-    <section id="pricing" class="py-24 lg:py-32">
+    <section id="pricing" class="py-20 lg:py-24">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
-            <div class="text-center mb-20">
-                <h2 class="text-4xl lg:text-5xl font-bold tracking-tight mb-6">Transparente Preisgestaltung</h2>
-                <p class="text-xl text-slate-600">Keine versteckten Kosten. Keine Einrichtungsgebühren. Jederzeit kündbar.</p>
+            <div class="text-center mb-12">
+                <h2 class="text-3xl lg:text-4xl font-bold tracking-tight mb-4">Preise</h2>
+                <p class="text-lg text-slate-600">Monatlich kündbar • Zahlung per Stripe</p>
             </div>
             
-            <div class="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                <div class="bg-white p-8 rounded-2xl border-2 border-slate-200 hover-lift flex flex-col">
-                    <div class="mb-8">
-                        <h3 class="text-2xl font-bold mb-2">Development</h3>
-                        <p class="text-slate-600">Für Entwicklung und Testing</p>
-                    </div>
-                    <div class="mb-8">
-                        <div class="text-5xl font-black">€0</div>
-                        <p class="text-slate-500 mt-2">Kostenlos</p>
-                    </div>
-                    <ul class="space-y-4 mb-8 flex-grow">
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-check text-green-600 mt-1"></i>
-                            <span class="text-slate-700">Bis zu 5 Rechnungen/Monat</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-check text-green-600 mt-1"></i>
-                            <span class="text-slate-700">ebInterface 6.1 Standard</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-check text-green-600 mt-1"></i>
-                            <span class="text-slate-700">BRZ-Validierung</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-check text-green-600 mt-1"></i>
-                            <span class="text-slate-700">Community Support</span>
-                        </li>
-                    </ul>
-                    <a href="/api-keys/free" class="w-full py-3.5 border-2 border-slate-300 rounded-xl font-semibold hover:bg-slate-50 transition text-center">Kostenlos starten</a>
-                </div>
-                
-                <div class="bg-gradient-to-br from-red-600 to-red-700 text-white p-8 rounded-2xl shadow-2xl hover-lift flex flex-col relative transform scale-105">
-                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                        <span class="bg-yellow-400 text-slate-900 px-4 py-1.5 rounded-full text-sm font-bold uppercase shadow-lg">Beliebteste Wahl</span>
-                    </div>
-                    <div class="mb-8">
+            <div class="max-w-2xl mx-auto">
+                <div class="bg-white p-8 rounded-xl border-2 border-slate-200">
+                    <div class="mb-6">
                         <h3 class="text-2xl font-bold mb-2">Business</h3>
-                        <p class="text-red-100">Für professionelle Anwendungen</p>
+                        <p class="text-slate-600">REST API Zugang</p>
                     </div>
-                    <div class="mb-8">
-                        <div class="text-5xl font-black">€29</div>
-                        <p class="text-red-100 mt-2">pro Monat, zzgl. MwSt.</p>
+                    <div class="mb-6">
+                        <div class="text-4xl font-bold">€29</div>
+                        <p class="text-slate-500 mt-1">pro Monat, zzgl. MwSt.</p>
                     </div>
-                    <ul class="space-y-4 mb-8 flex-grow">
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-check mt-1"></i>
+                    <ul class="space-y-3 mb-8 text-sm">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-slate-400 mt-0.5"></i>
                             <span>Unbegrenzte Rechnungen</span>
                         </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-check mt-1"></i>
-                            <span>Priority E-Mail Support</span>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-slate-400 mt-0.5"></i>
+                            <span>1 API-Key</span>
                         </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-check mt-1"></i>
-                            <span>99,9% Uptime SLA</span>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-slate-400 mt-0.5"></i>
+                            <span>E-Mail Support</span>
                         </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-check mt-1"></i>
-                            <span>Eigene API-Keys</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-check mt-1"></i>
-                            <span>Analytics Dashboard</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-check mt-1"></i>
-                            <span>Webhook-Integration</span>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-slate-400 mt-0.5"></i>
+                            <span>Web Generator</span>
                         </li>
                     </ul>
-                    <a href="/buy" class="w-full py-3.5 bg-white text-red-600 rounded-xl font-semibold hover:bg-red-50 transition text-center shadow-lg">Jetzt abonnieren</a>
-                </div>
-                
-                <div class="bg-white p-8 rounded-2xl border-2 border-slate-200 hover-lift flex flex-col">
-                    <div class="mb-8">
-                        <h3 class="text-2xl font-bold mb-2">Enterprise</h3>
-                        <p class="text-slate-600">Self-Hosted Lösung</p>
-                    </div>
-                    <div class="mb-8">
-                        <div class="text-5xl font-black">€999</div>
-                        <p class="text-slate-500 mt-2">Einmalige Lizenzgebühr</p>
-                    </div>
-                    <ul class="space-y-4 mb-8 flex-grow">
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-check text-green-600 mt-1"></i>
-                            <span class="text-slate-700">On-Premise Installation</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-check text-green-600 mt-1"></i>
-                            <span class="text-slate-700">Go-Binary Lizenz</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-check text-green-600 mt-1"></i>
-                            <span class="text-slate-700">Quellcode-Einsicht</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-check text-green-600 mt-1"></i>
-                            <span class="text-slate-700">Dedizierter Support</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <i class="fa-solid fa-check text-green-600 mt-1"></i>
-                            <span class="text-slate-700">Maximale Datensouveränität</span>
-                        </li>
-                    </ul>
-                    <a href="#" class="w-full py-3.5 border-2 border-slate-300 rounded-xl font-semibold hover:bg-slate-50 transition text-center">Kontakt aufnehmen</a>
+                    <a href="/buy" class="block w-full py-3 bg-slate-900 text-white rounded-lg font-semibold hover:bg-slate-800 transition text-center">Jetzt abonnieren</a>
                 </div>
             </div>
             
-            <div class="mt-16 text-center">
-                <p class="text-slate-600 mb-4">Alle Pläne beinhalten</p>
-                <div class="flex flex-wrap justify-center gap-6 text-sm text-slate-600">
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-shield-halved text-green-600"></i> DSGVO-Compliance</span>
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-certificate text-blue-600"></i> BRZ-Validierung</span>
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-code text-purple-600"></i> API-Dokumentation</span>
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-rotate text-orange-600"></i> Automatische Updates</span>
-                </div>
+            <div class="mt-12 text-center text-sm text-slate-500">
+                <p>Keine Einrichtungsgebühr • Keine versteckten Kosten • API-Key per E-Mail</p>
             </div>
         </div>
     </section>
 
-    <section class="bg-slate-900 text-white py-24">
-        <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center">
-            <h2 class="text-4xl lg:text-5xl font-bold mb-6">Bereit für gesetzeskonforme E-Rechnungen?</h2>
-            <p class="text-xl text-slate-300 mb-10">Starten Sie noch heute mit unserem kostenlosen Development-Plan</p>
+    <section class="bg-slate-900 text-white py-20">
+        <div class="max-w-3xl mx-auto px-6 lg:px-8 text-center">
+            <h2 class="text-3xl lg:text-4xl font-bold mb-4">Jetzt starten</h2>
+            <p class="text-lg text-slate-300 mb-8">API-Key kaufen und sofort loslegen</p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#pricing" class="bg-red-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-red-700 transition shadow-lg">
-                    Kostenlos registrieren
+                <a href="/buy" class="bg-white text-slate-900 px-8 py-3 rounded-lg font-semibold hover:bg-slate-100 transition">
+                    Abonnieren (€29/Monat)
                 </a>
-                <a href="#docs" class="bg-slate-800 text-white border border-slate-700 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-slate-700 transition">
-                    Dokumentation lesen
+                <a href="/generator" class="bg-slate-800 text-white border border-slate-700 px-8 py-3 rounded-lg font-semibold hover:bg-slate-700 transition">
+                    Generator testen
                 </a>
             </div>
         </div>

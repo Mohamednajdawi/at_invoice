@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Invoice xmlns="http://www.ebinterface.at/schema/6p1/" GeneratingSystem="austrian-invoice-microservice" DocumentType="Invoice" InvoiceCurrency="EUR" Language="de">
+  <InvoiceNumber>2026-001</InvoiceNumber>
+  <InvoiceDate>2026-01-08</InvoiceDate>
+  <Delivery>
+    <Date>2026-01-08</Date>
+    <Address>
+      <Name>Freelance Developer</Name>
+      <Street>Neubaugasse 42</Street>
+      <Town>Wien</Town>
+      <ZIP>1070</ZIP>
+      <Country CountryCode="AT">Österreich</Country>
+    </Address>
+    <Contact>
+      <Name>Billing Department</Name>
+      <Email>dev@freelancer.at</Email>
+    </Contact>
+  </Delivery>
+  <Biller>
+    <VATIdentificationNumber>ATU61974703</VATIdentificationNumber>
+    <Address>
+      <Name>Freelance Developer</Name>
+      <Street>Neubaugasse 42</Street>
+      <Town>Wien</Town>
+      <ZIP>1070</ZIP>
+      <Country CountryCode="AT">Österreich</Country>
+    </Address>
+    <Contact>
+      <Name>Billing Department</Name>
+      <Email>dev@freelancer.at</Email>
+    </Contact>
+    <InvoiceRecipientsBillerID>FD-2026</InvoiceRecipientsBillerID>
+  </Biller>
+  <InvoiceRecipient>
+    <VATIdentificationNumber>ATU61976809</VATIdentificationNumber>
+    <OrderReference>
+      <OrderID>1234567890</OrderID>
+    </OrderReference>
+    <Address>
+      <Name>Startup Innovation Hub GmbH</Name>
+      <Street>Spittelauer Lände 12</Street>
+      <Town>Wien</Town>
+      <ZIP>1090</ZIP>
+      <Country CountryCode="AT">Österreich</Country>
+    </Address>
+    <Contact>
+      <Name>Accounting</Name>
+    </Contact>
+  </InvoiceRecipient>
+  <Details>
+    <ItemList>
+      <ListLineItem>
+        <Description>Mobile App Development - MVP Phase</Description>
+        <Quantity Unit="C62">1</Quantity>
+        <UnitPrice>4500.00</UnitPrice>
+        <InvoiceRecipientsOrderReference>
+          <OrderID>1234567890</OrderID>
+          <OrderPositionNumber>1</OrderPositionNumber>
+        </InvoiceRecipientsOrderReference>
+        <TaxItem>
+          <TaxableAmount>4500.00</TaxableAmount>
+          <TaxPercent TaxCategoryCode="S">20</TaxPercent>
+        </TaxItem>
+        <LineItemAmount>4500.00</LineItemAmount>
+      </ListLineItem>
+    </ItemList>
+  </Details>
+  <Tax>
+    <TaxItem>
+      <TaxableAmount>4500.00</TaxableAmount>
+      <TaxPercent TaxCategoryCode="S">20</TaxPercent>
+      <TaxAmount>900.00</TaxAmount>
+    </TaxItem>
+  </Tax>
+  <TotalGrossAmount>5400.00</TotalGrossAmount>
+  <PayableAmount>5400.00</PayableAmount>
+  <PaymentMethod>
+    <UniversalBankTransaction>
+      <BeneficiaryAccount>
+        <BIC>BKAUATWW</BIC>
+        <IBAN>AT611904300234573201</IBAN>
+        <BankAccountOwner>Freelance Developer</BankAccountOwner>
+      </BeneficiaryAccount>
+    </UniversalBankTransaction>
+  </PaymentMethod>
+</Invoice>
