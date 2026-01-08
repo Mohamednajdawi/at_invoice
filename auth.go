@@ -107,17 +107,44 @@ func generateAPIKey(isFreeTier bool) (string, error) {
 
 // findCustomerByAPIKey queries Stripe for a customer with matching API key in metadata
 func findCustomerByAPIKey(ctx context.Context, apiKey string) (*stripe.Customer, error) {
-	params := &stripe.CustomerListParams{}
-	params.Filters.AddFilter("metadata[api_key]", "", apiKey)
+	// Use Stripe Search API to find customer by metadata
+	// Note: Search API requires metadata to be indexed
+	searchQuery := fmt.Sprintf("metadata['api_key']:'%s'", apiKey)
+	params := &stripe.CustomerSearchParams{
+		Query: stripe.String(searchQuery),
+	}
 	params.Context = ctx
 
-	iter := customer.List(params)
+	iter := customer.Search(params)
 	if iter.Err() != nil {
-		return nil, fmt.Errorf("stripe customer list error: %w", iter.Err())
+		// If search fails, fall back to listing all customers (not ideal for large datasets)
+		log.Printf("Stripe search failed, falling back to list: %v", iter.Err())
+		return findCustomerByAPIKeyFallback(ctx, apiKey)
 	}
 
 	if iter.Next() {
 		return iter.Customer(), nil
+	}
+
+	return nil, nil // No customer found
+}
+
+// findCustomerByAPIKeyFallback lists all customers and filters by API key (fallback method)
+func findCustomerByAPIKeyFallback(ctx context.Context, apiKey string) (*stripe.Customer, error) {
+	params := &stripe.CustomerListParams{}
+	params.Limit = stripe.Int64(100) // Limit results per page
+	params.Context = ctx
+
+	iter := customer.List(params)
+	for iter.Next() {
+		cust := iter.Customer()
+		if cust.Metadata != nil && cust.Metadata["api_key"] == apiKey {
+			return cust, nil
+		}
+	}
+
+	if iter.Err() != nil {
+		return nil, fmt.Errorf("stripe customer list error: %w", iter.Err())
 	}
 
 	return nil, nil // No customer found
