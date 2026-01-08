@@ -261,35 +261,6 @@
                 </div>
             </div>
         </div>
-    </section>                        <div class="p-4 bg-slate-50 rounded-lg text-center">
-                            <i class="fa-solid fa-cart-shopping text-2xl text-slate-600 mb-2"></i>
-                            <p class="text-sm font-semibold">E-Commerce</p>
-                        </div>
-                        <div class="p-4 bg-slate-50 rounded-lg text-center">
-                            <i class="fa-solid fa-chart-line text-2xl text-slate-600 mb-2"></i>
-                            <p class="text-sm font-semibold">ERP-Systeme</p>
-                        </div>
-                        <div class="p-4 bg-slate-50 rounded-lg text-center">
-                            <i class="fa-solid fa-building text-2xl text-slate-600 mb-2"></i>
-                            <p class="text-sm font-semibold">CRM-Software</p>
-                        </div>
-                        <div class="p-4 bg-slate-50 rounded-lg text-center">
-                            <i class="fa-solid fa-wallet text-2xl text-slate-600 mb-2"></i>
-                            <p class="text-sm font-semibold">Buchhaltung</p>
-                        </div>
-                    </div>
-                    <div class="mt-6 pt-6 border-t border-slate-200">
-                        <p class="text-sm text-slate-600 mb-3">Verfügbare SDKs:</p>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1 bg-blue-50 text-blue-700 text-xs font-semibold rounded-full">Node.js</span>
-                            <span class="px-3 py-1 bg-green-50 text-green-700 text-xs font-semibold rounded-full">Python</span>
-                            <span class="px-3 py-1 bg-purple-50 text-purple-700 text-xs font-semibold rounded-full">PHP</span>
-                            <span class="px-3 py-1 bg-orange-50 text-orange-700 text-xs font-semibold rounded-full">Java</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </section>
 
     <section id="pricing" class="py-20 lg:py-24">
@@ -299,7 +270,7 @@
                 <p class="text-lg text-slate-600">Monatlich kündbar • Zahlung per Stripe</p>
             </div>
             
-            <div class="max-w-2xl mx-auto">
+            <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8">
                 <div class="bg-white p-8 rounded-xl border-2 border-slate-200">
                     <div class="mb-6">
                         <h3 class="text-2xl font-bold mb-2">Business</h3>
@@ -328,6 +299,36 @@
                         </li>
                     </ul>
                     <a href="/buy" class="block w-full py-3 bg-slate-900 text-white rounded-lg font-semibold hover:bg-slate-800 transition text-center">Jetzt abonnieren</a>
+                </div>
+                
+                <div class="bg-white p-8 rounded-xl border-2 border-slate-200">
+                    <div class="mb-6">
+                        <h3 class="text-2xl font-bold mb-2">Enterprise</h3>
+                        <p class="text-slate-600">Self-Hosted Lösung</p>
+                    </div>
+                    <div class="mb-6">
+                        <div class="text-4xl font-bold">€999</div>
+                        <p class="text-slate-500 mt-1">Einmalig, zzgl. MwSt.</p>
+                    </div>
+                    <ul class="space-y-3 mb-8 text-sm">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-slate-400 mt-0.5"></i>
+                            <span>Go-Binary Lizenz</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-slate-400 mt-0.5"></i>
+                            <span>On-Premise Installation</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-slate-400 mt-0.5"></i>
+                            <span>Quellcode-Einsicht</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-slate-400 mt-0.5"></i>
+                            <span>Dedizierter Support</span>
+                        </li>
+                    </ul>
+                    <a href="mailto:najdawimohamed@gmail.com?subject=Enterprise%20License%20Request" class="block w-full py-3 border-2 border-slate-300 text-slate-900 rounded-lg font-semibold hover:bg-slate-50 transition text-center">Kontakt aufnehmen</a>
                 </div>
             </div>
             
@@ -368,8 +369,31 @@
                 <div>
                     <h4 class="font-semibold text-white mb-4">Produkt</h4>
                     <ul class="space-y-3 text-sm">
-                        <li><a href="#" class="hover:text-white transition">Funktionen</a></li>                    </ul>
+                        <li><a href="#features" class="hover:text-white transition">Funktionen</a></li>
+                        <li><a href="#pricing" class="hover:text-white transition">Preise</a></li>
+                        <li><a href="/generator" class="hover:text-white transition">Generator</a></li>
+                    </ul>
                 </div>
+                
+                <div>
+                    <h4 class="font-semibold text-white mb-4">Support</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="mailto:support@at-invoice.at" class="hover:text-white transition">E-Mail</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-white mb-4">Rechtliches</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li><a href="#" class="hover:text-white transition">Impressum</a></li>
+                        <li><a href="#" class="hover:text-white transition">Datenschutz</a></li>
+                        <li><a href="#" class="hover:text-white transition">AGB</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="pt-8 border-t border-slate-800 text-sm text-center">
+                <p>&copy; 2026 AT-Invoice. ebInterface 6.1 REST API Service.</p>
             </div>
         </div>
     </footer>
