@@ -4,7 +4,7 @@
     "biller": {
         "name": "Consulting Partners Austria GmbH",
         "vat_id": "ATU13585627",
-        "biller_id": "CP-001",
+        "biller_id": "1000001",
         "email": "billing@consulting-partners.at",
         "contact_name": "Dr. Thomas Wagner",
         "address": {
